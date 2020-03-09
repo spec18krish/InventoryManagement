@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.IMS</groupId>
+    <artifactId>com.ims.dataaccess</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>        
+    </properties>
+    
+    
+    
+    <!-- https://mvnrepository.com/artifact/org.jooq/jooq -->
+    <dependencies>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>3.12.3</version>
+            <type>jar</type>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.48</version>
+        </dependency>
+        
+                <!-- https://mvnrepository.com/artifact/org.jooq/jooq-codegen -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen</artifactId>
+            <version>3.12.3</version>
+        </dependency>
+        
+                <!-- https://mvnrepository.com/artifact/org.jooq/jooq-meta -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
+            <version>3.12.3</version>
+        </dependency>
+        
+                <!-- https://mvnrepository.com/artifact/org.jooq/jooq-codegen-maven -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen-maven</artifactId>
+            <version>3.12.3</version>
+        </dependency>   
+        
+ 
+
+ 
+        
+    </dependencies>
+    
+ 
+    
+    <build>
+        <plugins>
+      <plugin>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <version>3.12.3</version>
+       
+        <executions>
+          <execution>
+            <id>jooq-codegen</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+                          <jdbc>
+	    <driver>com.mysql.jdbc.Driver</driver>
+	    <url>jdbc:mysql://localhost:3306/inventorymanagement?allowPublicKeyRetrieval=true</url>
+	    <user>root</user>
+	    <password>vasanth</password>
+	    
+	    <!-- You can also pass user/password and other JDBC properties in the optional properties tag: -->
+	    <properties>
+	      <property><key>user</key><value>root</value></property>
+	      <property><key>password</key><value>vasanth</value></property>
+	    </properties>
+	  </jdbc>
+	
+	  <generator>
+              
+	    <database>	     
+	      <name>org.jooq.meta.mysql.MySQLDatabase</name>
+	      <includes>.*</includes>
+	
+	      <excludes>
+	           UNUSED_TABLE                # This table (unqualified name) should not be generated
+	         | PREFIX_.*                   # Objects with a given prefix should not be generated
+	         | SECRET_SCHEMA\.SECRET_TABLE # This table (qualified name) should not be generated
+	         | SECRET_ROUTINE              # This routine (unqualified name) ...
+	      </excludes>
+	
+	     
+	      <inputSchema>inventorymanagement</inputSchema>
+	    </database>
+	
+	    <generate>
+	      <!-- Generation flags: See advanced configuration properties -->
+              <!-- https://www.jooq.org/doc/3.4/manual/code-generation/codegen-advanced/ -->
+                <pojos>true</pojos>
+                <daos>true</daos>
+              <!--  <fluentSetters>true</fluentSetters> -->
+               <!-- <jpaAnnotations>true</jpaAnnotations> -->
+                <!--   <validationAnnotations>true</validationAnnotations>-->
+	    </generate>
+	
+	    <target>
+	           <packageName>com.ims.dataAccess</packageName>     
+	      <directory>src\main\java</directory>
+	    </target>
+	  </generator>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+        </plugins>
+         
+    </build>
+</project>
