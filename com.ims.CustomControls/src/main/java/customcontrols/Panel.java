@@ -8,6 +8,8 @@ package customcontrols;
 import Helper.UIHelper;
 import Skin.Skin;
 import java.awt.Dimension;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,6 +24,10 @@ public class Panel extends javax.swing.JPanel {
         this.setLayout(null);
     }
     
+    protected Image getImageByPath(String path) {
+        Image imgIcon = new ImageIcon(this.getClass().getResource(path)).getImage();
+        return imgIcon;
+    }
    
 
     /**
