@@ -6,6 +6,7 @@
 package Presentation.Common;
 
 import Enums.ActionBarActions;
+import Enums.UserRole;
 import Presentation.Category.ProductCategoryNavigation;
 import Presentation.DashBoard;
 import Presentation.Login;
@@ -17,7 +18,6 @@ import customcontrols.Label;
 import customcontrols.NavigationLink;
 import customcontrols.Panel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -89,8 +89,30 @@ public class BaseNavigationFrame extends MainFrame {
     }
     
     public void initializeSideNavControls() {        
-        sideNavigation.setLayout(new MigLayout());   
+        sideNavigation.setLayout(new MigLayout());         
         String userRole = UserSessionRepository.getUserRole();
+        String welcome = "welcome " + UserSessionRepository.getUserFullName() + " ("+userRole+")";
+        
+        boolean isAdmin = false;
+        boolean isManager = false;
+        boolean isSalesRep = false;
+        
+          if (userRole.equals("Admin")) {
+              this.actionBar.setUserRole(UserRole.Admin);
+              isAdmin = true;
+          }
+          else
+          if (userRole.equals("Manager")) {
+              this.actionBar.setUserRole(UserRole.Manager);
+              isManager = true;
+          }
+          else
+          if (userRole.equals("SalesPerson")) {
+              this.actionBar.setUserRole(UserRole.SalesRep);
+              isSalesRep = true;
+          }
+        
+        ImageIcon navHomeImage = getImageIconByPath("/Images/sideNavigation/navHome.png");
         ImageIcon navProductsImage = getImageIconByPath("/Images/sideNavigation/navProducts.png");
         ImageIcon navOrdersImage = getImageIconByPath("/Images/sideNavigation/navOrders.png");
         ImageIcon navDealersImage = getImageIconByPath("/Images/sideNavigation/navDealers.png");
@@ -99,6 +121,7 @@ public class BaseNavigationFrame extends MainFrame {
         ImageIcon navBrandImage = getImageIconByPath("/Images/sideNavigation/navBrand.png");
         ImageIcon navReturnsImage = getImageIconByPath("/Images/sideNavigation/navReturns.png");
         
+        NavigationLink sideNavDashBoard = new NavigationLink("Dashboard", navHomeImage);
         NavigationLink sideNavProducts = new NavigationLink("Products", navProductsImage);
         NavigationLink sideNavOrders = new NavigationLink("Orders", navOrdersImage);
         NavigationLink sideNavDealers = new NavigationLink("Dealers", navDealersImage);
@@ -107,23 +130,38 @@ public class BaseNavigationFrame extends MainFrame {
         NavigationLink sideNavBrand = new NavigationLink("Brand", navBrandImage);
         NavigationLink sideNavReturns = new NavigationLink("Returns", navReturnsImage);   
         
+        Label lblWelcome = new Label();
+        lblWelcome.setText(welcome);
+        lblWelcome.setFont(skin.font20);
+        lblWelcome.setForeground(skin.milkWhiteColor);
+        lblWelcome.setPreferredSize(new Dimension(100, 20));
+        sideNavigation.add(lblWelcome, "wrap, grow, pushx, gapy 20");
         
-        if ((userRole.equals("Admin") || userRole.equals("Manager")) || userRole.equals("SalesPerson") ) 
-        {
-            sideNavigation.add(sideNavProducts, "wrap, grow, pushx, gapy 20");
-            sideNavigation.add(sideNavOrders, "wrap, grow, gapy 20");
-            sideNavigation.add(sideNavDealers, "wrap, grow, pushx, gapy 20");
+        sideNavigation.add(sideNavDashBoard, "wrap, grow, pushx, gapy 20");
+        sideNavigation.add(sideNavProducts, "wrap, grow, pushx, gapy 20");
+        sideNavigation.add(sideNavOrders, "wrap, grow, gapy 20");
         
+        if (isAdmin || isManager) 
+        {           
+            sideNavigation.add(sideNavDealers, "wrap, grow, pushx, gapy 20");        
         
-            if ((userRole.equals("Admin") || userRole.equals("Manager")) && !userRole.equals("SalesPerson")) 
+            if (isAdmin) 
             {
                sideNavigation.add(sideNavUsers, "wrap, grow, pushx, gapy 20");
-            }        
-
-            sideNavigation.add(sideNavCategory, "wrap, grow, pushx, gapy 20");
-            sideNavigation.add(sideNavBrand, "wrap, grow, pushx, gapy 20");
-            sideNavigation.add(sideNavReturns, "wrap, grow, pushx, gapy 20");
+            }  
+    
         }
+          sideNavigation.add(sideNavCategory, "wrap, grow, pushx, gapy 20");
+          sideNavigation.add(sideNavBrand, "wrap, grow, pushx, gapy 20");
+          sideNavigation.add(sideNavReturns, "wrap, grow, pushx, gapy 20");
+       
+        sideNavDashBoard.addActionListener(e -> {
+          DashBoard dash = new DashBoard();
+          dash.setVisible(true);
+          this.setVisible(false);  
+            
+        });
+        
         sideNavProducts.addActionListener(e -> {
             ProductNavigation pn = new ProductNavigation();
             pn.setVisible(true);
