@@ -22,8 +22,8 @@ public class MySqlConnection {
     public static Connection getConnection() throws SQLException
     {
         String userName = "root";
-        String password = "vasanth";
-        String url = "jdbc:mysql://localhost:3306/inventoryManagement?allowPublicKeyRetrieval=true";
+        String password = "vidhya";
+        String url = "jdbc:mysql://localhost:3307/inventoryManagement?allowPublicKeyRetrieval=true";
 
         // Connection is the only JDBC resource that we need
         // PreparedStatement and ResultSet are handled by jOOQ, internally
