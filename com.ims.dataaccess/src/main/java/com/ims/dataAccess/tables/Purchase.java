@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Purchase extends TableImpl<PurchaseRecord> {
 
-    private static final long serialVersionUID = -568718080;
+    private static final long serialVersionUID = 1428805275;
 
     /**
      * The reference instance of <code>inventorymanagement.purchase</code>
@@ -66,7 +66,7 @@ public class Purchase extends TableImpl<PurchaseRecord> {
     /**
      * The column <code>inventorymanagement.purchase.purchaseName</code>.
      */
-    public final TableField<PurchaseRecord, String> PURCHASENAME = createField(DSL.name("purchaseName"), org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<PurchaseRecord, String> PURCHASENAME = createField(DSL.name("purchaseName"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>inventorymanagement.purchase.purchaseDescription</code>.
@@ -86,7 +86,7 @@ public class Purchase extends TableImpl<PurchaseRecord> {
     /**
      * The column <code>inventorymanagement.purchase.shipmentType</code>.
      */
-    public final TableField<PurchaseRecord, String> SHIPMENTTYPE = createField(DSL.name("shipmentType"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
+    public final TableField<PurchaseRecord, String> SHIPMENTTYPE = createField(DSL.name("shipmentType"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * Create a <code>inventorymanagement.purchase</code> table reference

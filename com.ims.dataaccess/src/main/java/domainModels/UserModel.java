@@ -16,7 +16,7 @@ import org.jooq.Record;
 public class UserModel  extends BaseModel {
     
     public UserModel() {
-        
+        this.userType = new UserTypeModel();
     }
     
     public UserModel(Record record) {

@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Usertype extends TableImpl<UsertypeRecord> {
 
-    private static final long serialVersionUID = 1898664245;
+    private static final long serialVersionUID = 1405316557;
 
     /**
      * The reference instance of <code>inventorymanagement.usertype</code>
@@ -63,9 +63,9 @@ public class Usertype extends TableImpl<UsertypeRecord> {
     public final TableField<UsertypeRecord, Integer> USERTYPEID = createField(DSL.name("userTypeId"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>inventorymanagement.usertype.userTypename</code>.
+     * The column <code>inventorymanagement.usertype.userTypeName</code>.
      */
-    public final TableField<UsertypeRecord, String> USERTYPENAME = createField(DSL.name("userTypename"), org.jooq.impl.SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<UsertypeRecord, String> USERTYPENAME = createField(DSL.name("userTypeName"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>inventorymanagement.usertype.userTypeDescription</code>.

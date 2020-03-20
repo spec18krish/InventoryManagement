@@ -28,7 +28,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class UsertypeRecord extends UpdatableRecordImpl<UsertypeRecord> implements Record3<Integer, String, String> {
 
-    private static final long serialVersionUID = -1281573230;
+    private static final long serialVersionUID = 802080466;
 
     /**
      * Setter for <code>inventorymanagement.usertype.userTypeId</code>.
@@ -45,14 +45,14 @@ public class UsertypeRecord extends UpdatableRecordImpl<UsertypeRecord> implemen
     }
 
     /**
-     * Setter for <code>inventorymanagement.usertype.userTypename</code>.
+     * Setter for <code>inventorymanagement.usertype.userTypeName</code>.
      */
     public void setUsertypename(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>inventorymanagement.usertype.userTypename</code>.
+     * Getter for <code>inventorymanagement.usertype.userTypeName</code>.
      */
     public String getUsertypename() {
         return (String) get(1);

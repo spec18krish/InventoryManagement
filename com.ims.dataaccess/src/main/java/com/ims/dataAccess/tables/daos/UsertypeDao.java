@@ -69,21 +69,21 @@ public class UsertypeDao extends DAOImpl<UsertypeRecord, com.ims.dataAccess.tabl
     }
 
     /**
-     * Fetch records that have <code>userTypename BETWEEN lowerInclusive AND upperInclusive</code>
+     * Fetch records that have <code>userTypeName BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ims.dataAccess.tables.pojos.Usertype> fetchRangeOfUsertypename(String lowerInclusive, String upperInclusive) {
         return fetchRange(Usertype.USERTYPE.USERTYPENAME, lowerInclusive, upperInclusive);
     }
 
     /**
-     * Fetch records that have <code>userTypename IN (values)</code>
+     * Fetch records that have <code>userTypeName IN (values)</code>
      */
     public List<com.ims.dataAccess.tables.pojos.Usertype> fetchByUsertypename(String... values) {
         return fetch(Usertype.USERTYPE.USERTYPENAME, values);
     }
 
     /**
-     * Fetch a unique record that has <code>userTypename = value</code>
+     * Fetch a unique record that has <code>userTypeName = value</code>
      */
     public com.ims.dataAccess.tables.pojos.Usertype fetchOneByUsertypename(String value) {
         return fetchOne(Usertype.USERTYPE.USERTYPENAME, value);

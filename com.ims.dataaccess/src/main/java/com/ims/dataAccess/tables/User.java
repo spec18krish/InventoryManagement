@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = -1653305342;
+    private static final long serialVersionUID = 1901361773;
 
     /**
      * The reference instance of <code>inventorymanagement.user</code>
@@ -70,12 +70,12 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>inventorymanagement.user.firstName</code>.
      */
-    public final TableField<UserRecord, String> FIRSTNAME = createField(DSL.name("firstName"), org.jooq.impl.SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<UserRecord, String> FIRSTNAME = createField(DSL.name("firstName"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>inventorymanagement.user.lastName</code>.
      */
-    public final TableField<UserRecord, String> LASTNAME = createField(DSL.name("lastName"), org.jooq.impl.SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<UserRecord, String> LASTNAME = createField(DSL.name("lastName"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>inventorymanagement.user.age</code>.
@@ -90,7 +90,7 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>inventorymanagement.user.email</code>.
      */
-    public final TableField<UserRecord, String> EMAIL = createField(DSL.name("email"), org.jooq.impl.SQLDataType.VARCHAR(25).nullable(false), this, "");
+    public final TableField<UserRecord, String> EMAIL = createField(DSL.name("email"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>inventorymanagement.user.mobileNumber</code>.
@@ -100,12 +100,12 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>inventorymanagement.user.userName</code>.
      */
-    public final TableField<UserRecord, String> USERNAME = createField(DSL.name("userName"), org.jooq.impl.SQLDataType.VARCHAR(15), this, "");
+    public final TableField<UserRecord, String> USERNAME = createField(DSL.name("userName"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>inventorymanagement.user.password</code>.
      */
-    public final TableField<UserRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(15), this, "");
+    public final TableField<UserRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>inventorymanagement.user.houseNo</code>.
@@ -115,17 +115,17 @@ public class User extends TableImpl<UserRecord> {
     /**
      * The column <code>inventorymanagement.user.streetName</code>.
      */
-    public final TableField<UserRecord, String> STREETNAME = createField(DSL.name("streetName"), org.jooq.impl.SQLDataType.VARCHAR(20), this, "");
+    public final TableField<UserRecord, String> STREETNAME = createField(DSL.name("streetName"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>inventorymanagement.user.suburb</code>.
      */
-    public final TableField<UserRecord, String> SUBURB = createField(DSL.name("suburb"), org.jooq.impl.SQLDataType.VARCHAR(10), this, "");
+    public final TableField<UserRecord, String> SUBURB = createField(DSL.name("suburb"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * The column <code>inventorymanagement.user.city</code>.
      */
-    public final TableField<UserRecord, String> CITY = createField(DSL.name("city"), org.jooq.impl.SQLDataType.VARCHAR(10), this, "");
+    public final TableField<UserRecord, String> CITY = createField(DSL.name("city"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
      * Create a <code>inventorymanagement.user</code> table reference
