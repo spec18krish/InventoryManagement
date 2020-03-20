@@ -8,6 +8,7 @@ package Presentation.Common;
 import Enums.ActionBarActions;
 import Presentation.Category.ProductCategoryNavigation;
 import Presentation.DashBoard;
+import Presentation.Login;
 import Presentation.Order.PurchaseOrderNavigation;
 import Presentation.Product.ProductNavigation;
 import Prsentation.Dealers.DealerNavigation;
@@ -23,6 +24,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
+import repository.UserSessionRepository;
 
 /**
  *
@@ -48,10 +50,7 @@ public class BaseNavigationFrame extends MainFrame {
     
     public void initializeBaseNavigationFrame() {
         setPanes();
-        setNavigation();     
-      
-        this.setBackground(this.skin.frameBackgroundColor);       
-        this.setSize(this.skin.frameDimension);       
+        setNavigation();       
       
         actionBar.addClickedListener( e -> { ActionItemClickedHandlers(e); });
     }
@@ -91,6 +90,7 @@ public class BaseNavigationFrame extends MainFrame {
     
     public void initializeSideNavControls() {        
         sideNavigation.setLayout(new MigLayout());   
+        String userRole = UserSessionRepository.getUserRole();
         ImageIcon navProductsImage = getImageIconByPath("/Images/sideNavigation/navProducts.png");
         ImageIcon navOrdersImage = getImageIconByPath("/Images/sideNavigation/navOrders.png");
         ImageIcon navDealersImage = getImageIconByPath("/Images/sideNavigation/navDealers.png");
@@ -108,14 +108,22 @@ public class BaseNavigationFrame extends MainFrame {
         NavigationLink sideNavReturns = new NavigationLink("Returns", navReturnsImage);   
         
         
-        sideNavigation.add(sideNavProducts, "wrap, grow, pushx, gapy 20");
-        sideNavigation.add(sideNavOrders, "wrap, grow, gapy 20");
-        sideNavigation.add(sideNavDealers, "wrap, grow, pushx, gapy 20");
-        sideNavigation.add(sideNavUsers, "wrap, grow, pushx, gapy 20");
-        sideNavigation.add(sideNavCategory, "wrap, grow, pushx, gapy 20");
-        sideNavigation.add(sideNavBrand, "wrap, grow, pushx, gapy 20");
-        sideNavigation.add(sideNavReturns, "wrap, grow, pushx, gapy 20");
+        if ((userRole.equals("Admin") || userRole.equals("Manager")) || userRole.equals("SalesPerson") ) 
+        {
+            sideNavigation.add(sideNavProducts, "wrap, grow, pushx, gapy 20");
+            sideNavigation.add(sideNavOrders, "wrap, grow, gapy 20");
+            sideNavigation.add(sideNavDealers, "wrap, grow, pushx, gapy 20");
         
+        
+            if ((userRole.equals("Admin") || userRole.equals("Manager")) && !userRole.equals("SalesPerson")) 
+            {
+               sideNavigation.add(sideNavUsers, "wrap, grow, pushx, gapy 20");
+            }        
+
+            sideNavigation.add(sideNavCategory, "wrap, grow, pushx, gapy 20");
+            sideNavigation.add(sideNavBrand, "wrap, grow, pushx, gapy 20");
+            sideNavigation.add(sideNavReturns, "wrap, grow, pushx, gapy 20");
+        }
         sideNavProducts.addActionListener(e -> {
             ProductNavigation pn = new ProductNavigation();
             pn.setVisible(true);
@@ -198,7 +206,10 @@ public class BaseNavigationFrame extends MainFrame {
     }
     
     protected void logout() {
-        
+        UserSessionRepository.logout();
+        Login login = new Login();
+        login.setVisible(true);
+        this.setVisible(false);
     }
     
     public void navigate(BaseNavigationFrame frame) 

@@ -35,9 +35,8 @@ public class TabNavigationFrame extends BaseNavigationFrame {
      */
     public TabNavigationFrame() {
         super();
-        initComponents();
-        this.setBackground(this.skin.frameBackgroundColor);       
-        this.setSize(this.skin.frameDimension);   
+        initComponents();         
+   
         initializeBaseNavigationFrame();
         initializeTabNavigationFrame();
         tabControl.addChangeListener(e -> TabChangeListener(e));

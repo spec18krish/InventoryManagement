@@ -11,12 +11,16 @@ import customcontrols.Label;
 import customcontrols.LabelTextField;
 import customcontrols.Panel;
 import customcontrols.PictureBox;
+import customcontrols.TextBox;
 import domainModels.UserModel;
 import java.awt.Dimension;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import net.miginfocom.swing.MigLayout;
 import repository.UserRepository;
+import repository.UserSessionRepository;
 
 /**
  *
@@ -31,7 +35,8 @@ public class Login extends MainFrame {
     private LabelTextField lblTextUserName;
     private Label lblInventoryManagement;
     private Label lblLoginLabel;
-    private Label lblloginImage;
+    private Label lblPassword;
+    private JPasswordField txtPassword;
     private Button btnLogin;
     
     public Login() {
@@ -48,14 +53,16 @@ public class Login extends MainFrame {
         lblTextUserName = new LabelTextField();
         lblTextPassword = new LabelTextField();
         lblInventoryManagement = new Label();
-        lblloginImage = new Label();
+        lblPassword = new Label();
+        txtPassword = new JPasswordField(16);
         btnLogin = new Button("Login");
         btnLogin.addActionListener(a -> this.btnLogin_click());
         
         this.lblLoginLabel.setForeground(this.skin.blueGreenColor);
         this.lblLoginLabel.setFont(skin.fontBold20);
         this.lblTextUserName.setLabelText("User Name: ");
-        this.lblTextPassword.setLabelText("Password: ");
+        this.lblPassword.setText("Password: ");
+        
         this.lblInventoryManagement.setText("Inventory Management System");       
         this.lblInventoryManagement.setForeground(this.skin.skyBlueColor);
         this.lblInventoryManagement.setFont(skin.fontBold18);
@@ -79,7 +86,8 @@ public class Login extends MainFrame {
          this.pnlLeft.add(lblInventoryManagement, "wrap");
          this.pnlLeft.add(lblLoginLabel, "wrap");
          this.pnlLeft.add(lblTextUserName, "wrap");
-         this.pnlLeft.add(lblTextPassword, "wrap");
+         this.pnlLeft.add(this.lblPassword, "wrap, gapleft 10");
+         this.pnlLeft.add(txtPassword, "wrap, gapleft 10");
         
          this.pnlLeft.add(btnLogin);
          
@@ -93,11 +101,16 @@ public class Login extends MainFrame {
     private void btnLogin_click() 
     {
         UserRepository userRepo = new UserRepository();
-        UserModel userModel = userRepo.login(this.lblTextUserName.getTextVal(), this.lblTextPassword.getTextVal());
+        UserModel userModel = userRepo.login(this.lblTextUserName.getTextVal(), new String(this.txtPassword.getPassword()));
         
         if (userModel != null) {
+            UserSessionRepository.setUserModel(userModel);
             DashBoard dashBoard = new DashBoard();
             dashBoard.setVisible(true);
+            this.setVisible(false);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Login failed");
         }
     }
     

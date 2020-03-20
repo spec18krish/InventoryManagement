@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,8 +36,10 @@ public class MainFrame extends BaseFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(getSkin().frameBackgroundColor);
         setBounds(0, 0, 2300, 1500);		
-        setSize(2300, 1500);
-      //  setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setSize(2400, 1500);
+        setPreferredSize(new Dimension(2400, 1500));
+        this.setMinimumSize(new Dimension(2400, 1500));
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
        // setUndecorated(true);
        // setIconImage(new ImageIcon(this.getClass().getResource("/Image/inventory.png")).getImage());		
     }

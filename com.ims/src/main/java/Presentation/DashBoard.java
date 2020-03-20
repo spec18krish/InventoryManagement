@@ -38,8 +38,6 @@ public class DashBoard extends BaseNavigationFrame {
     public DashBoard() {       
         super();
         initComponents();
-        this.setBackground(this.skin.frameBackgroundColor);       
-        this.setSize(this.skin.frameDimension); 
         initializeBaseNavigationFrame();
         initializeDashBoard();
         actionBar.setHomeMode();
