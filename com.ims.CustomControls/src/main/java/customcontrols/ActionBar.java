@@ -7,6 +7,7 @@ package customcontrols;
 
 import Enums.ActionBarActions;
 import Enums.NavigationAction;
+import Enums.UserRole;
 import Skin.Skin;
 import interfaces.ActionBarItemClickedHandler;
 import java.awt.Color;
@@ -32,6 +33,13 @@ public class ActionBar extends javax.swing.JPanel {
     
   private List<ActionBarItemClickedHandler> listeners = new ArrayList<ActionBarItemClickedHandler>();
   private Skin skin = new Skin();
+  private UserRole _role;
+  
+  private boolean isAdmin = false;
+  private boolean isManager = false;
+  private boolean isSalesRep = false;
+ 
+  
     public ActionBar() {
         initComponents();              
 
@@ -49,6 +57,8 @@ public class ActionBar extends javax.swing.JPanel {
         this.btnCancel.setIcon(getImageIcon("/Icons/cancel.png"));
         this.btnLogout.setIcon(getImageIcon("/Icons/logout.png"));
         this.btnDelete.setIcon(getImageIcon("/Icons/delete.png"));
+        
+        this.btnHome.setVisible(false);
         
         this.lblTitle.setFont(this.skin.fontBold24);
         this.lblTitle.setForeground(this.skin.milkWhiteColor);
@@ -79,8 +89,31 @@ public class ActionBar extends javax.swing.JPanel {
         
     }
     
+    public void setUserRole(UserRole role) {
+        _role = role;
+        this.isAdmin = _role == UserRole.Admin;
+        this.isManager = _role == UserRole.Manager;
+        this.isSalesRep = _role == UserRole.SalesRep;
+    }
+    
+    public boolean canAdd() {
+        return !this.isSalesRep;
+    }
+    
+    public boolean canSave() {
+        return this.isAdmin || this.isManager;
+    }
+    
+    public boolean canUpdate() {
+         return this.isAdmin || this.isManager;
+    }
+    
+    public boolean canDelete() {
+         return this.isAdmin || this.isManager;
+    }
+    
     public void setHomeMode() {
-        this.btnHome.setVisible(false);
+      //  this.btnHome.setVisible(false);
         this.btnAdd.setVisible(false);
         this.btnSave.setVisible(false);
         this.btnCancel.setVisible(false);
@@ -90,32 +123,32 @@ public class ActionBar extends javax.swing.JPanel {
     }
     
     public void setCreateMode() {
-        this.btnHome.setVisible(false);
+      //  this.btnHome.setVisible(false);
         this.btnAdd.setVisible(false);
-        this.btnSave.setVisible(true);
+        this.btnSave.setVisible(true && !this.isSalesRep);
         this.btnCancel.setVisible(true);
-        this.btnUpdate.setVisible(false);   
-        this.btnDelete.setVisible(false);
+        this.btnUpdate.setVisible(false && !this.isSalesRep);   
+        this.btnDelete.setVisible(false && !this.isSalesRep);
         this.btnLogout.setVisible(false);
     }
     
     public void setUpdateMode() {
-        this.btnHome.setVisible(false);
-        this.btnAdd.setVisible(false);
-        this.btnSave.setVisible(false);
+      //  this.btnHome.setVisible(false);
+        this.btnAdd.setVisible(false && !this.isSalesRep);
+        this.btnSave.setVisible(false && !this.isSalesRep);
         this.btnCancel.setVisible(true);
-        this.btnUpdate.setVisible(true);
-        this.btnDelete.setVisible(true);
+        this.btnUpdate.setVisible(true && !this.isSalesRep);
+        this.btnDelete.setVisible(true && !this.isSalesRep);
         this.btnLogout.setVisible(false);
     }
     
     public void setListMode() {
-        this.btnHome.setVisible(true);
-        this.btnAdd.setVisible(true);
-        this.btnSave.setVisible(false);
+       // this.btnHome.setVisible(true);
+        this.btnAdd.setVisible(true && !this.isSalesRep);
+        this.btnSave.setVisible(false && !this.isSalesRep);
         this.btnCancel.setVisible(false);
-        this.btnUpdate.setVisible(false);
-        this.btnDelete.setVisible(false);
+        this.btnUpdate.setVisible(false && !this.isSalesRep);
+        this.btnDelete.setVisible(false && !this.isSalesRep);
         this.btnLogout.setVisible(true);
     }
     

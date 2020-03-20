@@ -125,9 +125,6 @@
               <Dimension value="[117, 40]"/>
             </Property>
           </Properties>
-          <AccessibilityProperties>
-            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Delete"/>
-          </AccessibilityProperties>
         </Component>
         <Component class="customcontrols.ActionBarItem" name="btnCancel">
           <Properties>
