@@ -151,14 +151,12 @@ public class ProductDetail extends TabNavigationPanel {
         pnlleft.add(cmbDealer, ctrlConstraints);
         pnlRight.add(lblImage, "span, gapleft 30");
         pnlleft.add(pnlRight, "spany 7, spanx, gapleft 30, dock east, wrap");   
-        pnlBottom.add(descriptionScrollPane, "grow, push");
-        
+        pnlBottom.add(descriptionScrollPane, "grow, push");       
        //;
-       CC componentConstraints = new CC();
-       componentConstraints.alignX("center").spanX().wrap().gapAfter("60");
+     
       
-        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
-        this.add(lblTitle, componentConstraints);
+      
+        this.add(this.getTitleLabel("Product Detail"), this.getTitleConstraint());
         this.add(pnlleft, "wrap");
         this.add(lblDescription, "wrap");
         this.add(pnlBottom, "span 6 6, grow, push");

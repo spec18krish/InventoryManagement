@@ -28,14 +28,17 @@ public class PurchaseOrderNavigation extends TabNavigationFrame {
         super();    
         this.useMigLayout();
         initializeOrderNavigation();
+        this.clearActiveNav();
+        this.sideNavOrders.setActive();
     }
     
     
     public void initializeOrderNavigation() {
         purchaseOrderDetail = new PurchaseOrderDetail();
         browsePurchaseOrder = new BrowsePurchaseOrder();        
-        purchaseOrderFilter = new PurchaseOrderFilter();
-        
+        purchaseOrderFilter = new PurchaseOrderFilter();        
+
+        pnlBrowse.add(this.getTitleLabel("Purchase Order List"), this.getTitleConstraint());
         pnlBrowse.add(purchaseOrderFilter, "span, growx, pushx");
         pnlBrowse.add(browsePurchaseOrder, "span, growx, pushx");   
         pnlDetail.add(purchaseOrderDetail, "span, growx, pushx");

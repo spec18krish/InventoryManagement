@@ -7,9 +7,11 @@ package Presentation.Common;
 
 import Skin.Skin;
 import customcontrols.Label;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import net.miginfocom.layout.CC;
 
 /**
  *
@@ -86,12 +88,39 @@ public class Utilities {
        return false;
     }
     
+     public boolean confirmation(String title, String message) {
+     int cofirmation = 1;
+     this.setBlackLabel();
+     cofirmation = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+    
+       if (cofirmation == JOptionPane.YES_OPTION) {
+           return true;
+       }
+       else 
+       if (cofirmation == JOptionPane.CANCEL_OPTION || cofirmation == JOptionPane.CLOSED_OPTION) {
+           return false;
+       }
+       return false;
+    }
+    
     public void showInfo(String title, String message) {
          if (title == null || title.isEmpty()) {
              title = "Info";
          }
          this.setBlackLabel();
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public Label getTitleLabel(String title) {       
+       Label lblTitle = new Label(title);
+       lblTitle.setFont(new Font("SansSerif", Font.BOLD, 30));
+       return lblTitle;
+    }
+    
+    public CC getTitleConstraint() {
+       CC componentConstraints = new CC();
+       componentConstraints.alignX("center").spanX().wrap().gapAfter("60");
+       return componentConstraints;
     }
     
     

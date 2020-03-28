@@ -7,8 +7,10 @@ package Presentation.Common;
 
 import Enums.ActionBarActions;
 import Enums.UserRole;
+import Presentation.About.AboutNavigation;
 import Presentation.Brand.ProductBrandNavigation;
 import Presentation.Category.ProductCategoryNavigation;
+import Presentation.ContactDealer.ContactDealerNavigation;
 import Presentation.DashBoard;
 import Presentation.Login;
 import Presentation.Order.PurchaseOrderNavigation;
@@ -43,6 +45,16 @@ public class BaseNavigationFrame extends MainFrame {
     public JPanel sideNavigation;
     
     public ActionBarActions currentUserAction;
+    
+    public NavigationLink sideNavDashBoard; 
+    public NavigationLink sideNavProducts;  
+    public NavigationLink sideNavOrders;
+    public NavigationLink sideNavDealers;
+    public NavigationLink sideNavContactDealer;
+    public  NavigationLink sideNavUsers; 
+    public  NavigationLink sideNavCategory;
+    public  NavigationLink sideNavBrand; 
+    public  NavigationLink sideNavAbout; 
     
     /**
      * Creates new form BaseNavigationFrame
@@ -95,7 +107,7 @@ public class BaseNavigationFrame extends MainFrame {
     public void initializeSideNavControls() {        
         sideNavigation.setLayout(new MigLayout());         
         String userRole = UserSessionRepository.getUserRole();
-        String welcome = "welcome " + UserSessionRepository.getUserFullName() + " ("+userRole+")";
+        String welcome = "Welcome " + UserSessionRepository.getFirstName()+ " ("+userRole+")";
         
         boolean isAdmin = false;
         boolean isManager = false;
@@ -120,27 +132,30 @@ public class BaseNavigationFrame extends MainFrame {
         ImageIcon navProductsImage = getImageIconByPath("/Images/sideNavigation/navProducts.png");
         ImageIcon navOrdersImage = getImageIconByPath("/Images/sideNavigation/navOrders.png");
         ImageIcon navDealersImage = getImageIconByPath("/Images/sideNavigation/navDealers.png");
+        ImageIcon navContactDealer = getImageIconByPath("/Images/sideNavigation/navEmail.png");
         ImageIcon navUsersImage = getImageIconByPath("/Images/sideNavigation/navUsers.png");
         ImageIcon navCategoryImage = getImageIconByPath("/Images/sideNavigation/navCategory.png");
         ImageIcon navBrandImage = getImageIconByPath("/Images/sideNavigation/navBrand.png");
-        ImageIcon navReturnsImage = getImageIconByPath("/Images/sideNavigation/navReturns.png");
+        ImageIcon navAbout = getImageIconByPath("/Images/sideNavigation/navAbout.png");
         
-        NavigationLink sideNavDashBoard = new NavigationLink("Dashboard", navHomeImage);
-        NavigationLink sideNavProducts = new NavigationLink("Products", navProductsImage);
-        NavigationLink sideNavOrders = new NavigationLink("Orders", navOrdersImage);
-        NavigationLink sideNavDealers = new NavigationLink("Dealers", navDealersImage);
-        NavigationLink sideNavUsers = new NavigationLink("Users", navUsersImage);
-        NavigationLink sideNavCategory = new NavigationLink("Category", navCategoryImage);
-        NavigationLink sideNavBrand = new NavigationLink("Brand", navBrandImage);
-        NavigationLink sideNavReturns = new NavigationLink("Returns", navReturnsImage);   
+        
+        sideNavDashBoard = new NavigationLink("Dashboard", navHomeImage);
+        sideNavProducts = new NavigationLink("Products", navProductsImage);
+        sideNavOrders = new NavigationLink("Orders", navOrdersImage);
+        sideNavDealers = new NavigationLink("Dealers", navDealersImage);
+        sideNavContactDealer = new NavigationLink("Contact Dealers", navContactDealer);
+        sideNavUsers = new NavigationLink("Users", navUsersImage);
+        sideNavCategory = new NavigationLink("Category", navCategoryImage);
+        sideNavBrand = new NavigationLink("Brand", navBrandImage);
+        sideNavAbout = new NavigationLink("About", navAbout);   
         
         Label lblWelcome = new Label();
         lblWelcome.setText(welcome);
         lblWelcome.setFont(skin.font20);
-        lblWelcome.setForeground(skin.milkWhiteColor);
+        lblWelcome.setForeground(skin.goldenColor);
         lblWelcome.setPreferredSize(new Dimension(100, 20));
-        sideNavigation.add(lblWelcome, "wrap, grow, pushx, gapy 20");
         
+        sideNavigation.add(lblWelcome, "wrap, grow, pushx, gapy 20");        
         sideNavigation.add(sideNavDashBoard, "wrap, grow, pushx, gapy 20");
         sideNavigation.add(sideNavProducts, "wrap, grow, pushx, gapy 20");
         sideNavigation.add(sideNavOrders, "wrap, grow, gapy 20");
@@ -155,33 +170,45 @@ public class BaseNavigationFrame extends MainFrame {
             }  
     
         }
+          sideNavigation.add(sideNavContactDealer, "wrap, grow, pushx, gapy 20");
           sideNavigation.add(sideNavCategory, "wrap, grow, pushx, gapy 20");
           sideNavigation.add(sideNavBrand, "wrap, grow, pushx, gapy 20");
-          sideNavigation.add(sideNavReturns, "wrap, grow, pushx, gapy 20");
+          sideNavigation.add(sideNavAbout, "wrap, grow, pushx, gapy 20");
+          
        
-        sideNavDashBoard.addActionListener(e -> {
+        sideNavDashBoard.addActionListener(e -> {   
+          this.clearActiveNav();
+          sideNavDashBoard.setActive();
           DashBoard dash = new DashBoard();
           dash.setVisible(true);
           this.setVisible(false);  
             
         });
         
-        sideNavProducts.addActionListener(e -> {
+        sideNavProducts.addActionListener(e -> {        
+            this.clearActiveNav();
+            sideNavProducts.setActive();
             ProductNavigation pn = new ProductNavigation();
             pn.setVisible(true);
             this.setVisible(false);
         });
         
         
-        sideNavCategory.addActionListener(e -> {
+        sideNavCategory.addActionListener(e -> {  
           ProductCategoryNavigation pc = new ProductCategoryNavigation();
           pc.setVisible(true);
           this.setVisible(false);
         });
         
-        sideNavDealers.addActionListener(e -> {
+        sideNavDealers.addActionListener(e -> { 
           DealerNavigation dealer = new DealerNavigation();
           dealer.setVisible(true);
+          this.setVisible(false);
+        });
+        
+        sideNavContactDealer.addActionListener(e -> { 
+          ContactDealerNavigation contactDealer = new ContactDealerNavigation();
+          contactDealer.setVisible(true);
           this.setVisible(false);
         });
         
@@ -203,8 +230,26 @@ public class BaseNavigationFrame extends MainFrame {
           this.setVisible(false);       
             
         });
+        
+        sideNavAbout.addActionListener(e -> { 
+          AboutNavigation about = new AboutNavigation();
+          about.setVisible(true);
+          this.setVisible(false);
+        });
 
         
+    }
+    
+    public void clearActiveNav() {
+        sideNavDashBoard.setInactive();
+        sideNavProducts.setInactive();
+        sideNavOrders.setInactive();
+        sideNavDealers.setInactive();
+        sideNavContactDealer.setInactive();
+        sideNavUsers.setInactive();
+        sideNavCategory.setInactive();
+        sideNavBrand.setInactive();
+        sideNavAbout.setInactive();
     }
     
     public void ActionItemClickedHandlers(ActionBarActions action) {

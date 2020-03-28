@@ -42,6 +42,8 @@ public class ProductBrandNavigation extends BaseNavigationFrame {
         initializeBaseNavigationFrame();
         brandRepository = new BrandRepository();
         initializeProductBrandNavigation();
+        this.clearActiveNav();
+        this.sideNavBrand.setActive();
     }
     
     
@@ -58,7 +60,7 @@ public class ProductBrandNavigation extends BaseNavigationFrame {
         txtBrandName = new TextBox();       
         txtBrandDescription = new TextArea(1000, 300);
         lblBrandDescription = new Label("Description");
-        
+        this.centerPane.add(this.getTitleLabel("Product Brand"), this.getTitleConstraint());
         AddUpdatePanel.add(lblBrandName, "gapy 10, span 2, split 2 ");
         AddUpdatePanel.add(txtBrandName, "wrap");
         AddUpdatePanel.add(lblBrandDescription, "wrap, gapy 10");
@@ -127,7 +129,7 @@ public class ProductBrandNavigation extends BaseNavigationFrame {
     
     @Override
     protected void save() {
-        if (!this.validationSucceded()) {
+        if (!this.validationSucceded(false)) {
             return;
         }
         BrandModel model = this.getValues();
@@ -138,10 +140,10 @@ public class ProductBrandNavigation extends BaseNavigationFrame {
         this.clearValues();
     }
     
-    private boolean validationSucceded() {
+    private boolean validationSucceded(boolean isUpdate) {
         ArrayList<String> error = new ArrayList<String>();        
         error = this.txtBrandName.hasValidValue() ? error : this.addError(error, "Brand Name Required");        
-        if (this.txtBrandName.hasValidValue()) {
+        if (this.txtBrandName.hasValidValue() && !isUpdate) {
             boolean brandExists = this.brandRepository.brandNameExists(this.txtBrandName.getText());
             error = !brandExists ? error : this.addError(error, "Brand Name already exists");
         }
@@ -168,7 +170,7 @@ public class ProductBrandNavigation extends BaseNavigationFrame {
     
     @Override
     protected void update() {
-        if (!this.validationSucceded()) {
+        if (!this.validationSucceded(true)) {
             return;
         }
         BrandModel model = this.getValues();

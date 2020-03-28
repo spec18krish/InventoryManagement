@@ -8,6 +8,7 @@ package Presentation.Common;
 import Helper.UIHelper;
 import Skin.Skin;
 import customcontrols.BaseFrame;
+import customcontrols.Label;
 import customcontrols.Panel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import net.miginfocom.layout.CC;
 
 /**
  *
@@ -110,12 +112,24 @@ public class MainFrame extends BaseFrame {
       return this.utility.addError(errors, message);
     }
     
+    protected CC getTitleConstraint() {
+        return this.utility.getTitleConstraint();
+    }
+    
+    protected Label getTitleLabel(String title){
+        return this.utility.getTitleLabel(title);
+    }
+    
     protected boolean confirmCanel() {
         return this.utility.confirmCancel();
     }
     
     protected boolean confirmDelete() {
         return this.utility.confirmDelete();
+    }
+    
+    protected boolean confirmMessage(String title, String message) {
+        return this.utility.confirmation(title, message);
     }
     
     protected void showInfo(String title, String message) {

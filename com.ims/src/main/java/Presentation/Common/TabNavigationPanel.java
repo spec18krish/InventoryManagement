@@ -7,6 +7,7 @@ package Presentation.Common;
 
 import Enums.NavigationAction;
 import EventObject.TabChangeEventObj;
+import customcontrols.Label;
 import customcontrols.Panel;
 import interfaces.DataNavigationChangedHandler;
 import interfaces.SearchChangeHandler;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import net.miginfocom.layout.CC;
 
 /**
  *
@@ -89,6 +91,18 @@ public class TabNavigationPanel extends Panel {
         return this.utility.confirmDelete();
     }
     
+    protected boolean confirmMessage(String title, String message) {
+        return this.utility.confirmation(title, message);
+    }
+    
+    protected CC getTitleConstraint() {
+        return this.utility.getTitleConstraint();
+    }
+    
+    protected Label getTitleLabel(String title){
+        return this.utility.getTitleLabel(title);
+    }
+    
     public void goTOBrowse(String optionalMessage, boolean isSuccess) {
         
         String message = optionalMessage;
@@ -96,13 +110,15 @@ public class TabNavigationPanel extends Panel {
             if (message.equals(null) || message.isEmpty()) { 
                 message = "Record created or updated successfully";
             }            
-        this.fireTabChangeRequest(new TabChangeEventObj(0, null, NavigationAction.Browse));
+            this.utility.showInfo("Success", message);
+            this.fireTabChangeRequest(new TabChangeEventObj(0, null, NavigationAction.Browse));
         }
         else {
              if (message.equals(null) || message.isEmpty()) { 
                 message = "Record does not created or updated";
-            }            
+            }    
+             this.utility.showInfo("Failed", message);
         }
-        this.utility.showInfo("", message);
+        
     }
 }

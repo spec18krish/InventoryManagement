@@ -12,15 +12,18 @@ import EventObject.TabChangeEventObj;
 import Presentation.Product.BrowseProduct;
 import Presentation.Product.ProductDetail;
 import Presentation.Product.ProductFilterPanel;
+import customcontrols.Label;
 import customcontrols.Panel;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
+import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -43,8 +46,10 @@ public class TabNavigationFrame extends BaseNavigationFrame {
         initializeTabNavigationFrame();
         tabControl.addChangeListener(e -> TabChangeListener(e));
         actionBar.setActionBarActions(NavigationAction.Browse);
-        tabControl.setEnabledAt(1, false);       
-    }
+        tabControl.setEnabledAt(1, false);   
+
+    }    
+    
     
     public void useMigLayout() {      
         this.pnlBrowse.setLayout(new MigLayout());
@@ -55,15 +60,19 @@ public class TabNavigationFrame extends BaseNavigationFrame {
         centerPane.setLayout(new MigLayout());
         
         pnlBrowse = new Panel();        
-        pnlBrowse.setLayout(new BoxLayout(pnlBrowse, BoxLayout.PAGE_AXIS)); 
+        pnlBrowse.setLayout(new MigLayout()); 
         
         pnlDetail = new Panel();          
-        pnlDetail.setLayout(new BoxLayout(pnlDetail, BoxLayout.PAGE_AXIS)); 
+        pnlDetail.setLayout(new MigLayout()); 
         
         tabControl = new JTabbedPane();   
         tabControl.setFont(skin.font24);
         tabControl.addTab("Browse", pnlBrowse);
-        tabControl.addTab("Detail", pnlDetail);       
+        tabControl.addTab("Detail", pnlDetail); 
+        
+        CC componentConstraints = new CC();
+        componentConstraints.alignX("center").spanX().wrap().gapAfter("60").dockWest().grow().push();     
+
         
        // actionBar.addClickedListener( e -> { ActionItemClickedHandlers(e); });
 

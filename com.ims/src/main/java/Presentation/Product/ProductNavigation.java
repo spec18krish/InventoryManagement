@@ -41,6 +41,8 @@ public class ProductNavigation extends TabNavigationFrame {
         super();    
         this.useMigLayout();
         initializeProductNavigation();
+        this.clearActiveNav();
+        this.sideNavProducts.setActive();
     }
     
     public void initializeProductNavigation() {    
@@ -49,8 +51,9 @@ public class ProductNavigation extends TabNavigationFrame {
         browseProduct = new BrowseProduct();
         productFilter = new ProductFilterPanel();
         
+        pnlBrowse.add(this.getTitleLabel("Product List"), this.getTitleConstraint());
         pnlBrowse.add(productFilter, "span, growx, pushx");
-        pnlBrowse.add(browseProduct, "span, growx, pushx");   
+        pnlBrowse.add(browseProduct, "span, growx, pushx");
         pnlDetail.add(productDetail, "span, growx, pushx");
         
         browseProduct.addChangeTabRequest(e -> this.changeTab(e));

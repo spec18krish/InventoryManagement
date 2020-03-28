@@ -31,6 +31,8 @@ public class UserNavigation  extends TabNavigationFrame {
         super();    
         this.useMigLayout();
         initializeUserNavigation();
+        this.clearActiveNav();
+        this.sideNavUsers.setActive();
     }
     
     
@@ -39,9 +41,10 @@ public class UserNavigation  extends TabNavigationFrame {
         browseUser = new BrowseUser();        
         userFilter = new UserFilter();
         
-        
+        pnlBrowse.add(this.getTitleLabel("Users"), this.getTitleConstraint());
         pnlBrowse.add(userFilter, "span, growx, pushx");
         pnlBrowse.add(browseUser, "span, growx, pushx");   
+        pnlDetail.add(this.getTitleLabel("User Detail"), this.getTitleConstraint());
         pnlDetail.add(userDetail, "span, growx, pushx");
         
         userFilter.addOnSearchChanged(e -> this.onSearchChanged(e));

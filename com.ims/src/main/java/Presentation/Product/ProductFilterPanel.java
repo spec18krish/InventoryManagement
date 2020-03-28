@@ -59,7 +59,7 @@ private LabelTextFieldInline availableStockField;
         Button btnSearch = new Button("Search");
         nameTextField = new LabelTextFieldInline("Name:", 250, 20);
        
-        productIdField = new LabelTextFieldInline("ID:",  190, 20);
+        productIdField = new LabelTextFieldInline("Product Id:",  190, 20);
        
         ArrayList<String> categoryNames =  new ProductCategoryRepository().getAllCategoryNames();
         ArrayList<String> brandNames = new ArrayList<String>(Arrays.asList(new BrandRepository().getAllBrandNames()));

@@ -213,8 +213,15 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
         if (!this.validationSucceded()) {
             return;
         }
-       int inserted = this.purchaseRepo.createEntity(this.getUserEnteredValues()); 
-       this.goTOBrowse("Saved Successfully", inserted > 0);        
+       int inserted = this.purchaseRepo.createEntity(this.getUserEnteredValues());
+       
+        boolean sendEmail = this.confirmMessage("Send Email", "Do you want to send email to all the Dealers ?");
+        
+        if (sendEmail) {
+            this.confirmOrder();
+        }
+       
+       this.goTOBrowse("Email send and Saved Successfully", inserted > 0);        
     }
     
     public void add() {
@@ -229,9 +236,16 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
         if (!this.validationSucceded()) {
             return;
         }
+        
+        boolean sendEmail = this.confirmMessage("Send Email", "Do you want to send email to all the Dealers ?");
+        
+        if (sendEmail) {
+            this.confirmOrder();
+        }
+        
        int updated = this.purchaseRepo.updateEntity(this.getUserEnteredValues()); 
-       this.goTOBrowse("Saved Successfully", updated > 0);     
-       confirmOrder();
+       this.goTOBrowse("Email send and Orders updated Successfully", updated > 0);     
+       
 
     }
     

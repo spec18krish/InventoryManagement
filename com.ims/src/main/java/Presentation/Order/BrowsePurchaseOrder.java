@@ -32,7 +32,7 @@ public class BrowsePurchaseOrder extends TabNavigationPanel {
         super();
         this.setLayout(new MigLayout());     
         //this.setLayout(new MigLayout());
-        initializeBrowseProduct();
+        initializeBrowseProduct();       
         this.add(grd, "span, grow, push");
         tabChangeHandlers = new ArrayList<TabChangeRequestHandler>();
     }

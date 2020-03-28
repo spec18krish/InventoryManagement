@@ -34,6 +34,8 @@ public class DealerNavigation extends TabNavigationFrame
         super();    
         this.useMigLayout();
         initializeDealerNavigation();
+        this.clearActiveNav();
+        this.sideNavDealers.setActive();
     }
     
     public void initializeDealerNavigation() {    
@@ -41,8 +43,9 @@ public class DealerNavigation extends TabNavigationFrame
         browseDealer = new BrowseDealer(); 
         dealerDetail = new DealerDetail();
               
-
+        pnlBrowse.add(this.getTitleLabel("Dealer Lists"), this.getTitleConstraint());
         pnlBrowse.add(browseDealer, "span, growx, pushx");   
+        pnlDetail.add(this.getTitleLabel("Dealer Detail"), this.getTitleConstraint());
         pnlDetail.add(dealerDetail, "span, growx, pushx");
         browseDealer.addChangeTabRequest(e -> this.changeTab(e));
         dealerDetail.addChangeTabRequest(e -> this.changeTab(e));

@@ -40,6 +40,8 @@ public class DashBoard extends BaseNavigationFrame {
         initComponents();
         initializeBaseNavigationFrame();
         initializeDashBoard();
+        this.clearActiveNav();
+        this.sideNavDashBoard.setActive();
         actionBar.setHomeMode();
     }
     

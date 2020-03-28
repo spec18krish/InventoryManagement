@@ -45,6 +45,7 @@ public class PurchaseProduct extends TabNavigationPanel {
         this.setLayout(new MigLayout());     
         //this.setLayout(new MigLayout());
         initializeBrowseProduct();
+        this.add(this.getTitleLabel("Purchase Product List"), this.getTitleConstraint());
         this.add(grd, "span, grow, push");
         purchaseProductDetail = new PurchaseProductDetail();   
         purchaseProductDetail.setPreferredSize(new Dimension(500, 500 ));

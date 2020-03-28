@@ -49,6 +49,8 @@ public class ProductCategoryNavigation extends BaseNavigationFrame {
         initializeBaseNavigationFrame();
         categoryRepo = new ProductCategoryRepository();
         initializeProductCategoryNavigation();
+        this.clearActiveNav();
+        this.sideNavCategory.setActive();
        
     }
     
@@ -66,6 +68,7 @@ public class ProductCategoryNavigation extends BaseNavigationFrame {
         txtCategoryDescription = new TextArea(1000, 300);
         lblCategoryDescription = new Label("Description");
         
+        this.centerPane.add(this.getTitleLabel("Product Category"), this.getTitleConstraint());
         AddUpdatePanel.add(lblCategoryName, "gapy 10, span 2, split 2 ");
         AddUpdatePanel.add(txtCategoryName, "wrap");
         AddUpdatePanel.add(lblCategoryDescription, "wrap, gapy 10");
@@ -99,11 +102,11 @@ public class ProductCategoryNavigation extends BaseNavigationFrame {
        loadGrid(model);
     }
     
-    private boolean validationSucceded() {
+    private boolean validationSucceded(boolean isUpdate) {
         ArrayList<String> error = new ArrayList<String>();
   
         error = this.txtCategoryName.hasValidValue() ? error : this.addError(error, "Category Name required");
-        if (this.txtCategoryName.hasValidValue()) {
+        if (this.txtCategoryName.hasValidValue() && !isUpdate) {
             boolean categoryExists = categoryRepo.categoryNameExists(this.txtCategoryName.getText());
             error = !categoryExists ? error : this.addError(error, "Category Name already exists");
          }
@@ -144,7 +147,7 @@ public class ProductCategoryNavigation extends BaseNavigationFrame {
     
     @Override
     protected void save() {
-        if (!this.validationSucceded()) {
+        if (!this.validationSucceded(false)) {
             return;
         }
         ProductCategoryModel model = this.getValues();
@@ -175,7 +178,7 @@ public class ProductCategoryNavigation extends BaseNavigationFrame {
     
     @Override
     protected void update() {
-        if (!this.validationSucceded()) {
+        if (!this.validationSucceded(true)) {
             return;
         }
         ProductCategoryModel model = this.getValues();

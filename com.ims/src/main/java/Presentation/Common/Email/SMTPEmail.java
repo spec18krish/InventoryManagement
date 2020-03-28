@@ -32,8 +32,7 @@ public class SMTPEmail {
     private static final String EMAIL_SUBJECT = "Test Send Email via SMTP (HTML)";
     private static final String EMAIL_TEXT = "<h1>Hello Java Mail \n ABC123</h1>";
     
-    
-    public void sendEmail(String EMAIL_TO, String emailBody) {
+    public void sendEmail(String emailTo, String emailSubject, String emailBody) {
         Properties prop = System.getProperties();
             prop.put("mail.smtp.auth", "true");
             prop.put("mail.smtp.starttls.enable", "true");
@@ -52,9 +51,9 @@ public class SMTPEmail {
         //    msg.setFrom(new InternetAddress(EMAIL_FROM));
 
             msg.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(EMAIL_TO, false));
+                    InternetAddress.parse(emailTo, false));
 
-            msg.setSubject(EMAIL_SUBJECT);
+            msg.setSubject(emailSubject);
 			
 			// TEXT email
         //    msg.setText(EMAIL_TEXT);
@@ -81,6 +80,11 @@ public class SMTPEmail {
             e.printStackTrace();
         }
 
+    }
+    
+    
+    public void sendEmail(String EMAIL_TO, String emailBody) {
+       this.sendEmail(EMAIL_TO, EMAIL_SUBJECT, emailBody);
     }
 
     

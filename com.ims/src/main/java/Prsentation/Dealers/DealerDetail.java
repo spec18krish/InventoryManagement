@@ -165,12 +165,13 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
         setValues(model);
     }
     
-    public boolean validationSucceded() {
+    public boolean validationSucceded(boolean isUpdate) {
+       
         ArrayList<String> error = new ArrayList<String>();
         
         error = this.txtCompany.hasValidValue() ? error : this.addError(error, "Company required");
         String company = this.txtCompany.getText();
-        if (this.txtCompany.hasValidValue()) {
+        if (this.txtCompany.hasValidValue() && !isUpdate) {
              error = !this.dealerRepo.isCompanyExists(company) ? error : this.addError(error, "Company Name already exists");
         }
        
@@ -199,7 +200,7 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
     
     @Override
     public void save() {
-       if (!validationSucceded()) {
+       if (!validationSucceded(false)) {
            return;
        }
        DealerModel dealerModel = getUserSelectedValues();
@@ -209,7 +210,7 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
 
     @Override
     public void update() {    
-       if (!validationSucceded()) {
+       if (!validationSucceded(true)) {
            return;
        }
        int updated = this.dealerRepo.updateEntity(getUserSelectedValues());
