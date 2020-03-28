@@ -38,12 +38,13 @@ public class ActionBar extends javax.swing.JPanel {
   private boolean isAdmin = false;
   private boolean isManager = false;
   private boolean isSalesRep = false;
+  public NavigationAction currentNavAction;
  
   
     public ActionBar() {
         initComponents();              
 
-      
+        currentNavAction = NavigationAction.Browse;
         this.setBackground(this.skin.skyBlueColor);
         int width = skin.frameDimension.width;
         
@@ -74,6 +75,8 @@ public class ActionBar extends javax.swing.JPanel {
     {
         switch(navAction) 
         {
+            case View:
+                setViewMode();
             case Create:
                 setCreateMode();
                 break;                
@@ -86,6 +89,8 @@ public class ActionBar extends javax.swing.JPanel {
                 break;
             
         }
+        
+        this.currentNavAction = navAction;
         
     }
     
@@ -149,6 +154,15 @@ public class ActionBar extends javax.swing.JPanel {
         this.btnCancel.setVisible(false);
         this.btnUpdate.setVisible(false && !this.isSalesRep);
         this.btnDelete.setVisible(false && !this.isSalesRep);
+        this.btnLogout.setVisible(true);
+    }
+    
+    public void setViewMode() {
+        this.btnAdd.setVisible(false);
+        this.btnSave.setVisible(false);
+        this.btnCancel.setVisible(false);
+        this.btnUpdate.setVisible(false);
+        this.btnDelete.setVisible(false );
         this.btnLogout.setVisible(true);
     }
     

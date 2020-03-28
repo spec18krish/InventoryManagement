@@ -32,7 +32,7 @@ public class Button extends JButton {
         setBackground(skin.darkButtonColor);
         setForeground(skin.buttonForeGroundColor);
         setSize(190, 38);
-        setFont(skin.font17);
+        setFont(skin.font20);
         Cursor csr = new Cursor(Cursor.HAND_CURSOR);
         setCursor(csr);
     }

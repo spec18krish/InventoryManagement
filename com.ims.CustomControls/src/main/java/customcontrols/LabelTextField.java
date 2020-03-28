@@ -38,6 +38,10 @@ public class LabelTextField extends Panel {
      public void setTextFieldBackground(Color background) {
          this.textField.setBackground(background);
      }
+     
+     public TextBox getTextBox() {
+         return this.textField;
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.

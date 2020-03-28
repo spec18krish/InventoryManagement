@@ -7,9 +7,13 @@ package customcontrols;
 
 import Helper.UIHelper;
 import Skin.Skin;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -22,6 +26,14 @@ public class Panel extends javax.swing.JPanel {
     
     public Panel() {       
         this.setLayout(null);
+    }
+    
+    public void setTitle(String title) {
+        TitledBorder border = BorderFactory.createTitledBorder(title);
+        border.setTitleFont(skin.font22);     
+        border.setTitleColor(skin.lightSteelBlueColor);
+        border.setBorder(BorderFactory.createLineBorder(skin.lightSteelBlueColor, 2));
+        this.setBorder(border);
     }
     
     protected Image getImageByPath(String path) {

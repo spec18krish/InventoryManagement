@@ -8,6 +8,9 @@ package customcontrols;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -23,21 +26,31 @@ public class LabelCombobox extends Panel {
         initComponents();
     }
    
-   public LabelCombobox(String labelText, Font font, String[] items) {
+   public LabelCombobox(String labelText, Font font, String[] items) {  
+         items[items.length + 1] = "--Select Items--";
          this.setControls(font, labelText, items);
          this.initialize(labelText, font, 0, items);
     }
    
    public LabelCombobox(String labelText, Font font, ArrayList<String> arrayListItems) {
-       
+         arrayListItems.add("--Select Items--");
          String[] arrayItems = new String[arrayListItems.size()];
-         arrayListItems.toArray(arrayItems);
+         arrayListItems.toArray(arrayItems);         
          this.setControls(font, labelText, arrayItems);
          this.initialize(labelText, font, 0, arrayItems);
     }
    
     public LabelCombobox(String labelText, String[] items) {             
            this.initialize(labelText, this.skin.font22, 0, items);
+    }
+    
+    public LabelCombobox(String labelText, int width, ArrayList<String> arrayListItems) { 
+           arrayListItems.add("--Select Items--");
+            List<String> itemsList =  arrayListItems.stream()
+		              .sorted(Comparator.naturalOrder())
+			      .collect(Collectors.toList());
+            String[] items = new String[itemsList.size()];
+           this.initialize(labelText, this.skin.font22, width, itemsList.toArray(items));          
     }
     
     public LabelCombobox(String labelText, int width, String[] items) {          

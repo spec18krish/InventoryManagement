@@ -19,7 +19,7 @@ public class BaseFrame extends javax.swing.JFrame {
     public BaseFrame() {
         super();
         initComponents();
-        this.setBackground(skin.frameBackgroundColor);                 
+        this.setBackground(skin.frameBackgroundColor);            
     }
     
     protected Skin getSkin() {

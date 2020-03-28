@@ -61,7 +61,7 @@ public class GridViewPanel<T> extends Panel {
         this.gridview = new javax.swing.JTable();
         //this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
          this.setLayout(new MigLayout());
-        this.setPreferredSize(new Dimension(500, 500));
+        //this.setPreferredSize(new Dimension(500, 500));
         
         this.gridview.setBackground(skin.milkWhiteColor);
         this.gridview.setForeground(skin.darkTextColor);
@@ -109,7 +109,7 @@ public class GridViewPanel<T> extends Panel {
              JTable table =(JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
                 int row = table.rowAtPoint(point);               
-                if (table.getSelectedRow() != -1) {
+                if (mouseEvent.getClickCount() == 1 && table.getSelectedRow() != -1) {
                    T model =  (T)((TableModel)table.getModel()).getRowByIndex(row);                  
                    for(ClickEventHandler<T> handler : clicklistners) {
                     handler.onClick(model);

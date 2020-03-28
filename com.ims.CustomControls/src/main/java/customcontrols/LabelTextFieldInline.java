@@ -46,6 +46,10 @@ public class LabelTextFieldInline extends Panel  {
         this.initialize(labelText, skin.font22, width, labelTextSpace);       
     }
      
+     public TextBox getTextField() {
+         return this.textField;
+     }
+     
     public void initialize(String labelText,Font font, int width, int labelTextSpace) {
         this.labelTextSpacing = labelTextSpace;
         initialize(labelText);
@@ -84,7 +88,7 @@ public class LabelTextFieldInline extends Panel  {
     }
     
      public String getTextVal() {
-        return this.textField.getText();
+        return this.textField.getText().trim();
     }
      
      public void setFieldBackground(Color background) {
