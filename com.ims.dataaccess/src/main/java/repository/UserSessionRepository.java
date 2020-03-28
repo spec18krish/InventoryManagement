@@ -32,6 +32,10 @@ public class UserSessionRepository {
        return userSession.userName;
     }
     
+    public static String getFirstName() {
+       return userSession.firstName;
+    }
+    
     public static String getUserFullName() {
         return userSession.firstName +" "+ userSession.lastName;
     }

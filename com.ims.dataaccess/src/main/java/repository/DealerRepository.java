@@ -32,8 +32,9 @@ public class DealerRepository extends DealerDao implements IRepository<DealerMod
   
   
   
-  public DealerRepository() {
-     this.context = MySqlConnection.getDSLContext();
+  public DealerRepository() {  
+     super();
+     this.context = MySqlConnection.getDSLContext();    
      this.tblDealer = Dealer.DEALER;
      this.tblUser = User.USER;
      this.tblUserType = Usertype.USERTYPE;         
@@ -57,7 +58,8 @@ public class DealerRepository extends DealerDao implements IRepository<DealerMod
 
     @Override
     public int updateEntity(DealerModel model) {
-        context.newRecord(tblUser, model).update();
+        UserRecord userRecord = context.newRecord(tblUser, model.user);
+        userRecord.update();
         return context.newRecord(tblDealer, model).update();       
     }
 
@@ -97,6 +99,7 @@ public class DealerRepository extends DealerDao implements IRepository<DealerMod
     public DealerModel getDealerByCompanyName(String companyName) {
        return this.context.select()
                     .from(tblDealer)
+                    .join(tblUser).on(tblDealer.USERID.eq(tblUser.USERID))
                     .where(tblDealer.COMPANYNAME.eq(companyName))
                     .fetchOne()
                     .map(record -> new DealerModel(record));
