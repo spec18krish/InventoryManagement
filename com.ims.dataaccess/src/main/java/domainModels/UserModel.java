@@ -36,6 +36,7 @@ public class UserModel  extends BaseModel {
        streetName = getValue("streetName", String.class);
        suburb = getValue("suburb", String.class);
        city = getValue("city", String.class);
+       country = getValue("country", String.class);
        userType = new UserTypeModel(record);
        
     }
@@ -55,6 +56,7 @@ public class UserModel  extends BaseModel {
     public String streetName;    
     public String suburb;    
     public String city;
+    public String country;
     public UserTypeModel userType;
     
 

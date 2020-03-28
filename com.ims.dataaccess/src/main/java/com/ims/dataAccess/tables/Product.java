@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Product extends TableImpl<ProductRecord> {
 
-    private static final long serialVersionUID = -857469455;
+    private static final long serialVersionUID = -68998640;
 
     /**
      * The reference instance of <code>inventorymanagement.product</code>
@@ -100,7 +100,7 @@ public class Product extends TableImpl<ProductRecord> {
     /**
      * The column <code>inventorymanagement.product.dealerId</code>.
      */
-    public final TableField<ProductRecord, Integer> DEALERID = createField(DSL.name("dealerId"), org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<ProductRecord, Integer> DEALERID = createField(DSL.name("dealerId"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>inventorymanagement.product</code> table reference

@@ -97,6 +97,13 @@ public class DealerDao extends DAOImpl<DealerRecord, com.ims.dataAccess.tables.p
     }
 
     /**
+     * Fetch a unique record that has <code>companyName = value</code>
+     */
+    public com.ims.dataAccess.tables.pojos.Dealer fetchOneByCompanyname(String value) {
+        return fetchOne(Dealer.DEALER.COMPANYNAME, value);
+    }
+
+    /**
      * Fetch records that have <code>dealerDescription BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ims.dataAccess.tables.pojos.Dealer> fetchRangeOfDealerdescription(String lowerInclusive, String upperInclusive) {

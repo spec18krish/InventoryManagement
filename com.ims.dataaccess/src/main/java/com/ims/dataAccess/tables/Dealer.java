@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Dealer extends TableImpl<DealerRecord> {
 
-    private static final long serialVersionUID = -563555298;
+    private static final long serialVersionUID = 184552528;
 
     /**
      * The reference instance of <code>inventorymanagement.dealer</code>
@@ -117,7 +117,7 @@ public class Dealer extends TableImpl<DealerRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.DEALER_DEALER_USERID_FK, Indexes.DEALER_PRIMARY);
+        return Arrays.<Index>asList(Indexes.DEALER_DEALER_COMPANY_UNIQUE, Indexes.DEALER_DEALER_USERID_FK, Indexes.DEALER_PRIMARY);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class Dealer extends TableImpl<DealerRecord> {
 
     @Override
     public List<UniqueKey<DealerRecord>> getKeys() {
-        return Arrays.<UniqueKey<DealerRecord>>asList(Keys.KEY_DEALER_PRIMARY);
+        return Arrays.<UniqueKey<DealerRecord>>asList(Keys.KEY_DEALER_PRIMARY, Keys.KEY_DEALER_DEALER_COMPANY_UNIQUE);
     }
 
     @Override

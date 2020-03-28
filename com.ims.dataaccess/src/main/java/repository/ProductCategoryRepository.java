@@ -58,7 +58,20 @@ public class ProductCategoryRepository extends ProductcategoryDao {
     
      public Productcategory getById(int id) {        
         return context.selectFrom(pCat).where(pCat.CATEGORYID.eq(id)).fetchOne().into(Productcategory.class);
-    }    
+    }
+     
+    public boolean categoryNameExists(String categoryName) {
+       String catName = this.context.select()
+                    .from(pCat)
+                    .where(pCat.CATEGORYNAME.eq(categoryName))
+                    .fetchOne(pCat.CATEGORYNAME, String.class);
+       
+       if (catName != null && !catName.isEmpty()) {
+           return true;
+       }
+       
+       return false;
+    }
     
     
 }

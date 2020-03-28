@@ -26,7 +26,7 @@ public class ProductModel extends BaseModel {
      this.price = getValue("price", Long.class);
      this.brandId = brandId = getValue("brandId", int.class);
      this.categoryId =  getValue("categoryId", int.class);
-     this.deaclerId = getValue("dealerId", int.class);
+     this.dealerId = getValue("dealerId", int.class);
      this.brand = new BrandModel(record);
      this.category = new ProductCategoryModel(record);  
      this.dealer = new DealerModel(record);
@@ -40,7 +40,7 @@ public class ProductModel extends BaseModel {
     public byte[]  image;
     public int categoryId;
     public int brandId;
-    public int deaclerId;
+    public int dealerId;
     public BrandModel brand;
     public ProductCategoryModel category;
     public DealerModel dealer;

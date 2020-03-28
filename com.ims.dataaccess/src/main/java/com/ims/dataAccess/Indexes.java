@@ -50,6 +50,7 @@ public class Indexes {
     public static final Index CUSTOMERORDERDETAIL_CUSTOMERORDERDETAIL_CUSTOMERORDERID_FK = Indexes0.CUSTOMERORDERDETAIL_CUSTOMERORDERDETAIL_CUSTOMERORDERID_FK;
     public static final Index CUSTOMERORDERDETAIL_CUSTOMERORDERDETAIL_PRODUCTID_FK = Indexes0.CUSTOMERORDERDETAIL_CUSTOMERORDERDETAIL_PRODUCTID_FK;
     public static final Index CUSTOMERORDERDETAIL_PRIMARY = Indexes0.CUSTOMERORDERDETAIL_PRIMARY;
+    public static final Index DEALER_DEALER_COMPANY_UNIQUE = Indexes0.DEALER_DEALER_COMPANY_UNIQUE;
     public static final Index DEALER_DEALER_USERID_FK = Indexes0.DEALER_DEALER_USERID_FK;
     public static final Index DEALER_PRIMARY = Indexes0.DEALER_PRIMARY;
     public static final Index PRODUCT_PRIMARY = Indexes0.PRODUCT_PRIMARY;
@@ -82,6 +83,7 @@ public class Indexes {
         public static Index CUSTOMERORDERDETAIL_CUSTOMERORDERDETAIL_CUSTOMERORDERID_FK = Internal.createIndex("customerOrderDetail_customerOrderId_fk", Customerorderdetail.CUSTOMERORDERDETAIL, new OrderField[] { Customerorderdetail.CUSTOMERORDERDETAIL.CUSTOMERORDERID }, false);
         public static Index CUSTOMERORDERDETAIL_CUSTOMERORDERDETAIL_PRODUCTID_FK = Internal.createIndex("customerOrderDetail_productId_fk", Customerorderdetail.CUSTOMERORDERDETAIL, new OrderField[] { Customerorderdetail.CUSTOMERORDERDETAIL.PRODUCTID }, false);
         public static Index CUSTOMERORDERDETAIL_PRIMARY = Internal.createIndex("PRIMARY", Customerorderdetail.CUSTOMERORDERDETAIL, new OrderField[] { Customerorderdetail.CUSTOMERORDERDETAIL.CUSTOMERORDERDETAILID }, true);
+        public static Index DEALER_DEALER_COMPANY_UNIQUE = Internal.createIndex("dealer_company_unique", Dealer.DEALER, new OrderField[] { Dealer.DEALER.COMPANYNAME }, true);
         public static Index DEALER_DEALER_USERID_FK = Internal.createIndex("dealer_userId_fk", Dealer.DEALER, new OrderField[] { Dealer.DEALER.USERID }, false);
         public static Index DEALER_PRIMARY = Internal.createIndex("PRIMARY", Dealer.DEALER, new OrderField[] { Dealer.DEALER.DEALERID }, true);
         public static Index PRODUCT_PRIMARY = Internal.createIndex("PRIMARY", Product.PRODUCT, new OrderField[] { Product.PRODUCT.PRODUCTID }, true);

@@ -17,13 +17,16 @@ import com.ims.dataAccess.tables.records.PurchasedetailRecord;
 import domainModels.PurchaseDetailModel;
 import domainModels.PurchaseModel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 import org.jooq.Batch;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import static org.jooq.impl.DSL.trueCondition;
 
 
 import repository.Interface.IRepository;
@@ -52,6 +55,50 @@ public class PurchaseRepository implements IRepository<PurchaseModel>{
          this.tblProductCategory = Productcategory.PRODUCTCATEGORY;
          this.tblDealer = Dealer.DEALER;
          this.tblUser = User.USER;
+    }
+    
+    
+    public List<PurchaseModel> searchEntity(int purchaseId, String purchaseName, String purchaseDate, String deliveryDate ) {
+        Condition where = trueCondition();
+        
+        where = (purchaseId > 0) ? where.and(tblPurchase.getName() +"."+ tblPurchase.PURCHASEID.getName()+"="+purchaseId+"")
+                                              : where;
+        
+        where = !(purchaseName.equals("")) ? where.and(tblPurchase.PURCHASENAME.getName()+"='"+purchaseName+"'")
+                                              : where;
+        where = !(purchaseDate.equals("")) ? where.and(tblPurchase.PURCHASEDATE.getName()+"='"+purchaseDate+"'")
+                                              : where;
+        where = !(deliveryDate.equals("")) ? where.and(tblPurchase.DELIVERYDATE.getName()+"='"+deliveryDate+"'")
+                                              : where;
+        
+         String sql = context.select()
+                                      .from(tblPurchase)
+                                      .join(tblPurchaseDetail).on(tblPurchase.PURCHASEID.eq(tblPurchaseDetail.PURCHASEID))
+                                      .join(tblProduct).on(tblPurchaseDetail.PRODUCTID.eq(tblProduct.PRODUCTID))
+                                      .join(tblBrand).on(tblProduct.BRANDID.eq(tblBrand.BRANDID))
+                                      .join(tblProductCategory).on(tblProduct.CATEGORYID.eq(tblProductCategory.CATEGORYID))
+                                     // .join(tblDealer).on(tblDealer.DEALERID.eq(tblProduct.DEALERID))
+                                      .where(where)
+                                      .getSQL();
+        
+        ArrayList<PurchaseModel> allPurchaseModel = new ArrayList<PurchaseModel>();
+        List<Record> records = context.select()
+                                      .from(tblPurchase)
+                                      .join(tblPurchaseDetail).on(tblPurchase.PURCHASEID.eq(tblPurchaseDetail.PURCHASEID))
+                                      .join(tblProduct).on(tblPurchaseDetail.PRODUCTID.eq(tblProduct.PRODUCTID))
+                                      .join(tblBrand).on(tblProduct.BRANDID.eq(tblBrand.BRANDID))
+                                      .join(tblProductCategory).on(tblProduct.CATEGORYID.eq(tblProductCategory.CATEGORYID))
+                                     // .join(tblDealer).on(tblDealer.DEALERID.eq(tblProduct.DEALERID))
+                                      .where(where)
+                                      .fetch();
+         Map<Integer, List<Record>> mapper =   records.stream().collect(Collectors.groupingBy(x -> ((Record)x).getValue("purchaseId", int.class)));
+     
+         for (Map.Entry<Integer, List<Record>> entry : mapper.entrySet()) {
+           allPurchaseModel.add(new PurchaseModel(entry.getValue()));
+         }
+         
+         return allPurchaseModel;
+        
     }
 
     @Override

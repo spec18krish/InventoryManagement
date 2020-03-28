@@ -75,6 +75,7 @@ public class Keys {
     public static final UniqueKey<CustomerorderRecord> KEY_CUSTOMERORDER_PRIMARY = UniqueKeys0.KEY_CUSTOMERORDER_PRIMARY;
     public static final UniqueKey<CustomerorderdetailRecord> KEY_CUSTOMERORDERDETAIL_PRIMARY = UniqueKeys0.KEY_CUSTOMERORDERDETAIL_PRIMARY;
     public static final UniqueKey<DealerRecord> KEY_DEALER_PRIMARY = UniqueKeys0.KEY_DEALER_PRIMARY;
+    public static final UniqueKey<DealerRecord> KEY_DEALER_DEALER_COMPANY_UNIQUE = UniqueKeys0.KEY_DEALER_DEALER_COMPANY_UNIQUE;
     public static final UniqueKey<ProductRecord> KEY_PRODUCT_PRIMARY = UniqueKeys0.KEY_PRODUCT_PRIMARY;
     public static final UniqueKey<ProductcategoryRecord> KEY_PRODUCTCATEGORY_PRIMARY = UniqueKeys0.KEY_PRODUCTCATEGORY_PRIMARY;
     public static final UniqueKey<ProductcategoryRecord> KEY_PRODUCTCATEGORY_PRODUCTCATEGORY_NAME_UNIQUE = UniqueKeys0.KEY_PRODUCTCATEGORY_PRODUCTCATEGORY_NAME_UNIQUE;
@@ -126,6 +127,7 @@ public class Keys {
         public static final UniqueKey<CustomerorderRecord> KEY_CUSTOMERORDER_PRIMARY = Internal.createUniqueKey(Customerorder.CUSTOMERORDER, "KEY_customerorder_PRIMARY", Customerorder.CUSTOMERORDER.CUSTOMERORDERID);
         public static final UniqueKey<CustomerorderdetailRecord> KEY_CUSTOMERORDERDETAIL_PRIMARY = Internal.createUniqueKey(Customerorderdetail.CUSTOMERORDERDETAIL, "KEY_customerorderdetail_PRIMARY", Customerorderdetail.CUSTOMERORDERDETAIL.CUSTOMERORDERDETAILID);
         public static final UniqueKey<DealerRecord> KEY_DEALER_PRIMARY = Internal.createUniqueKey(Dealer.DEALER, "KEY_dealer_PRIMARY", Dealer.DEALER.DEALERID);
+        public static final UniqueKey<DealerRecord> KEY_DEALER_DEALER_COMPANY_UNIQUE = Internal.createUniqueKey(Dealer.DEALER, "KEY_dealer_dealer_company_unique", Dealer.DEALER.COMPANYNAME);
         public static final UniqueKey<ProductRecord> KEY_PRODUCT_PRIMARY = Internal.createUniqueKey(Product.PRODUCT, "KEY_product_PRIMARY", Product.PRODUCT.PRODUCTID);
         public static final UniqueKey<ProductcategoryRecord> KEY_PRODUCTCATEGORY_PRIMARY = Internal.createUniqueKey(Productcategory.PRODUCTCATEGORY, "KEY_productcategory_PRIMARY", Productcategory.PRODUCTCATEGORY.CATEGORYID);
         public static final UniqueKey<ProductcategoryRecord> KEY_PRODUCTCATEGORY_PRODUCTCATEGORY_NAME_UNIQUE = Internal.createUniqueKey(Productcategory.PRODUCTCATEGORY, "KEY_productcategory_productCategory_name_unique", Productcategory.PRODUCTCATEGORY.CATEGORYNAME);

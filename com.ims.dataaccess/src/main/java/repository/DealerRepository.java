@@ -16,6 +16,7 @@ import com.ims.dataAccess.tables.records.UsertypeRecord;
 import domainModels.DealerModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import repository.Interface.IRepository;
 
 /**
@@ -40,8 +41,6 @@ public class DealerRepository extends DealerDao implements IRepository<DealerMod
 
     @Override
     public int createEntity(DealerModel model) {
-       
-        
        
         model.dealerId = 0;
         model.userId = 0;   
@@ -89,6 +88,31 @@ public class DealerRepository extends DealerDao implements IRepository<DealerMod
                           .fetchOne()
                           .map(record -> new DealerModel(record));
        return model;
+    }
+    
+    public List<String> getDealerCompanies() {
+        return this.getAll().stream().map(m -> m.companyName).collect(Collectors.toList());
+    }
+    
+    public DealerModel getDealerByCompanyName(String companyName) {
+       return this.context.select()
+                    .from(tblDealer)
+                    .where(tblDealer.COMPANYNAME.eq(companyName))
+                    .fetchOne()
+                    .map(record -> new DealerModel(record));
+    }
+    
+    public boolean isCompanyExists(String companyName) {
+       List<DealerModel> models = this.context.select()
+                               .from(tblDealer)
+                               .where(tblDealer.COMPANYNAME.eq(companyName))
+                               .fetch()
+                               .map(record -> new DealerModel(record));
+                               
+       if (models == null || models.size() <= 0) {
+           return false;
+       }
+       return true;
     }
   
   

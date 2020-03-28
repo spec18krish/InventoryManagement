@@ -17,9 +17,11 @@ import domainModels.PurchaseProductModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import static org.jooq.impl.DSL.trueCondition;
 
 /**
  *
@@ -40,6 +42,26 @@ public class ProductRepository extends ProductDao {
        tblBrand = com.ims.dataAccess.tables.Brand.BRAND;   
        tblCategory = com.ims.dataAccess.tables.Productcategory.PRODUCTCATEGORY;   
        tblDealer = Dealer.DEALER;
+    }
+    
+    public List<ProductModel> searchEntity(int productId, String name, String category, String brand, int availableStock) {
+        
+        Condition where = trueCondition();
+        
+        where = productId > 0 ? where.and(tblProduct.PRODUCTID.getName()+"="+productId) : where;
+        where = !(name.equals("")) ? where.and(tblProduct.NAME.getName()+"='"+name+"'") : where;
+        where = !(category.equals("")) ? where.and(tblCategory.CATEGORYNAME.getName()+"='"+category+"'"): where;
+        where = !(brand.equals("")) ? where.and(tblBrand.BRANDNAME.getName()+"='"+brand+"'"): where;
+        where =  (availableStock >= 0) ? where.and(tblProduct.AVAILABLESTOCK.getName()+"<='"+availableStock+"'") : where;
+        
+        List<ProductModel> productList = this.context.select()
+                                          .from(tblProduct)
+                                          .join(tblCategory).on(tblProduct.CATEGORYID.eq(tblCategory.CATEGORYID))
+                                          .where(where)                                          
+                                          .fetch()
+                                          .map(record -> new ProductModel(record));      
+        return productList;
+                    
     }
     
        
