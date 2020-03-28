@@ -24,6 +24,7 @@ public class Skin {
     public Color buttonForeGroundColor = new Color(255, 255, 255);
     
     public Color skyGreenColor = new Color(23, 183, 127);
+    public Color goldenColor = new Color(251, 255, 0);
     public Color blueGreenColor = new Color(42, 168, 159);
     public Color slateBlackColor = new Color(71, 73, 76);
     public Color skyBlueColor = new Color(62, 170, 209);
