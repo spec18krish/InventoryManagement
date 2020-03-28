@@ -18,7 +18,7 @@ public class Skin {
     public Color frameBackgroundColor = new Color(237, 240, 242);
     public Color panelColor = new Color(62, 170, 209);
     public Color panelLightCopyColor = new Color(224, 174, 119);
-    public Dimension frameDimension = new Dimension(2100, 1400);
+    public Dimension frameDimension = new Dimension(2400, 1500);
     public Color darkTextColor = new Color(65, 71, 85);
     public Color darkButtonColor = new Color(42, 168, 159);
     public Color buttonForeGroundColor = new Color(255, 255, 255);
@@ -36,6 +36,9 @@ public class Skin {
     public Color bloodRedColor = new Color(221 ,76 ,57);
     public Color darkBlueColor = new Color(0,115,182);
     public Color rasnaSafronColor = new Color(255,94,0);
+    public Color inValidControlColor = new Color(255, 138, 125);
+    public Color validControlColor = new Color(38, 140, 38);
+    public Color invalidLabelColor = new Color(219, 36, 15);
     
     public Font font17 = new Font("SansSerif", Font.PLAIN, 17);
     public Font font18 = new Font("SansSerif", Font.PLAIN, 18);

@@ -9,12 +9,8 @@ package Enums;
  *
  * @author Vidhya Mohan
  */
-public enum NavigationAction 
-{
-    View,
-    Create,
-    Update,
-    Delete,
-    Browse,
-    Search
+public enum NavigationTab {
+    
+    BrowseTab ,
+    DetailTab
 }
