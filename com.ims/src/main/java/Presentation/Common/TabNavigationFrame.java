@@ -6,6 +6,8 @@
 package Presentation.Common;
 
 import Enums.ActionBarActions;
+import Enums.NavigationAction;
+import Enums.NavigationTab;
 import EventObject.TabChangeEventObj;
 import Presentation.Product.BrowseProduct;
 import Presentation.Product.ProductDetail;
@@ -40,6 +42,8 @@ public class TabNavigationFrame extends BaseNavigationFrame {
         initializeBaseNavigationFrame();
         initializeTabNavigationFrame();
         tabControl.addChangeListener(e -> TabChangeListener(e));
+        actionBar.setActionBarActions(NavigationAction.Browse);
+        tabControl.setEnabledAt(1, false);       
     }
     
     public void useMigLayout() {      
@@ -63,16 +67,58 @@ public class TabNavigationFrame extends BaseNavigationFrame {
         
        // actionBar.addClickedListener( e -> { ActionItemClickedHandlers(e); });
 
-        centerPane.add(tabControl);
+        centerPane.add(tabControl, "grow, push");
         
     }    
+    
+    protected void enableBrowse(boolean enable) {
+        tabControl.setEnabledAt(0, enable);
+    }
+    
+    protected void enableDetail(boolean enable) {
+        tabControl.setEnabledAt(1, enable);
+    }
+    
+    protected void navigateTab(NavigationTab navigateTo) {
+        NavigationAction currentNavAction = actionBar.currentNavAction;
+        
+        boolean isModify = (currentNavAction == NavigationAction.Create) ||
+                           (currentNavAction == NavigationAction.Update) ||
+                           (currentNavAction == NavigationAction.Delete);
+        
+        boolean isUserCanceled = (this.currentUserAction == ActionBarActions.Cancel);
+        
+        if (navigateTo == NavigationTab.BrowseTab && isModify) {            
+          if (!isUserCanceled || this.confirmCanel()) {
+             this.enableBrowse(true);
+             this.enableDetail(false);
+          }
+        }
+        
+        if (navigateTo == NavigationTab.DetailTab && isModify) {            
+             this.enableBrowse(false);
+             this.enableDetail(true);
+        }
+    }
   
     protected void changeTab(TabChangeEventObj eventObj) {
       
     }
     
     protected void TabChangeListener(ChangeEvent e) {
-              
+        int selectedTab = tabControl.getSelectedIndex();
+        
+        if (selectedTab == 0) {           
+            actionBar.setActionBarActions(NavigationAction.Browse);
+        }
+        else 
+        if (selectedTab == 1) {
+            actionBar.setActionBarActions(NavigationAction.Update);
+        }
+    }
+    
+    protected void onSearchChanged(Object searchResult) {
+        
     }
     
 

@@ -8,8 +8,10 @@ package Presentation.Order;
 import Enums.NavigationAction;
 import EventObject.TabChangeEventObj;
 import Presentation.Common.TabNavigationFrame;
+import domainModels.ProductModel;
 
 import domainModels.PurchaseModel;
+import java.util.List;
 import javax.swing.event.ChangeEvent;
 
 /**
@@ -20,6 +22,7 @@ public class PurchaseOrderNavigation extends TabNavigationFrame {
     
     PurchaseOrderDetail purchaseOrderDetail;
     BrowsePurchaseOrder browsePurchaseOrder;
+    PurchaseOrderFilter purchaseOrderFilter;
     
     public PurchaseOrderNavigation() {
         super();    
@@ -31,10 +34,13 @@ public class PurchaseOrderNavigation extends TabNavigationFrame {
     public void initializeOrderNavigation() {
         purchaseOrderDetail = new PurchaseOrderDetail();
         browsePurchaseOrder = new BrowsePurchaseOrder();        
+        purchaseOrderFilter = new PurchaseOrderFilter();
         
+        pnlBrowse.add(purchaseOrderFilter, "span, growx, pushx");
         pnlBrowse.add(browsePurchaseOrder, "span, growx, pushx");   
         pnlDetail.add(purchaseOrderDetail, "span, growx, pushx");
         
+        purchaseOrderFilter.addOnSearchChanged(e -> this.onSearchChanged(e));
         browsePurchaseOrder.addChangeTabRequest(e -> this.changeTab(e));
         purchaseOrderDetail.addChangeTabRequest(e -> this.changeTab(e));
         browsePurchaseOrder.addDataNavigationChanged(e -> this.dataNavigationChanged((PurchaseModel)e));
@@ -44,6 +50,7 @@ public class PurchaseOrderNavigation extends TabNavigationFrame {
     
     protected void dataNavigationChanged(PurchaseModel model) {
         purchaseOrderDetail.load(model);
+        enableDetail(true);
     }
 
     @Override
@@ -58,6 +65,7 @@ public class PurchaseOrderNavigation extends TabNavigationFrame {
                 purchaseOrderDetail.setDefaultValues();
             }
             tabControl.setSelectedIndex(eventObj.tabIndex);
+            tabControl.setEnabledAt(eventObj.tabIndex, true);
             actionBar.setActionBarActions(eventObj.navAction);
         }
        else 
@@ -69,15 +77,14 @@ public class PurchaseOrderNavigation extends TabNavigationFrame {
         }
     }
     
-        @Override
+    @Override
     protected void TabChangeListener(ChangeEvent e){
-        int selectedTab = tabControl.getSelectedIndex(); 
-        
-        if(selectedTab > 0) {
-            if (selectedTab == 2) {
-                
-            }
-        }
+        super.TabChangeListener(e);
+    }
+    
+     @Override
+    protected void onSearchChanged(Object purchaseModel) {
+         this.browsePurchaseOrder.loadGrid((List<PurchaseModel>)purchaseModel);
     }
     
      @Override

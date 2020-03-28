@@ -16,6 +16,7 @@ import interfaces.TabChangeRequestHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import net.miginfocom.swing.MigLayout;
 import repository.ProductRepository;
 import repository.PurchaseRepository;
@@ -43,8 +44,8 @@ public class BrowsePurchaseOrder extends TabNavigationPanel {
        grd.addClickHandler(e -> gridViewClicked((PurchaseModel)e));
     }    
     
-    public void loadGrid() {
-        ArrayList<PurchaseModel> purchaseOrderLists = new ArrayList<PurchaseModel>();
+    public void loadGrid(List<PurchaseModel> purchaseModel) {
+        
         HashMap<String, String> columnsKeyVal = new LinkedHashMap<String, String>();    
    
         columnsKeyVal.put("purchaseId", "Purchase Id");
@@ -52,13 +53,17 @@ public class BrowsePurchaseOrder extends TabNavigationPanel {
         columnsKeyVal.put("purchaseDescription", "Purchase Description");
         columnsKeyVal.put("purchaseDate", "Purchase Date");
         columnsKeyVal.put("deliveryDate", "Date of Delivery");
-        columnsKeyVal.put("shipmentType", "Shipment Type");        
+        columnsKeyVal.put("shipmentType", "Shipment Type");      
         
+       ArrayList<PurchaseModel> arrPurchaseModel = new ArrayList<PurchaseModel>(purchaseModel);
+       TableModel<PurchaseModel> tblModel = new TableModel<PurchaseModel>(arrPurchaseModel, columnsKeyVal);
+       grd.setModel(tblModel);
+    }
+    
+    public void loadGrid() {        
         PurchaseRepository repo = new PurchaseRepository();
         ArrayList<PurchaseModel> model = repo.getAll();
-    
-       TableModel<PurchaseModel> tblModel = new TableModel<PurchaseModel>(model, columnsKeyVal);
-       grd.setModel(tblModel);
+        this.loadGrid(model);
     }
     
     public void gridViewClicked(PurchaseModel model) {

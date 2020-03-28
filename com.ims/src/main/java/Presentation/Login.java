@@ -15,9 +15,12 @@ import customcontrols.TextBox;
 import domainModels.UserModel;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.border.Border;
+import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
 import repository.UserRepository;
 import repository.UserSessionRepository;
@@ -54,7 +57,10 @@ public class Login extends MainFrame {
         lblTextPassword = new LabelTextField();
         lblInventoryManagement = new Label();
         lblPassword = new Label();
-        txtPassword = new JPasswordField(16);
+        txtPassword = new JPasswordField(28);
+        Border bdr = new javax.swing.border.MatteBorder(0, 0, 2, 0, this.skin.lightSteelBlueColor);            
+        txtPassword.setBorder(bdr);
+        txtPassword.setBackground(skin.frameBackgroundColor);      
         btnLogin = new Button("Login");
         btnLogin.addActionListener(a -> this.btnLogin_click());
         
@@ -89,17 +95,23 @@ public class Login extends MainFrame {
          this.pnlLeft.add(this.lblPassword, "wrap, gapleft 10");
          this.pnlLeft.add(txtPassword, "wrap, gapleft 10");
         
-         this.pnlLeft.add(btnLogin);
+         this.pnlLeft.add(btnLogin, "gapleft 10");
          
+         CC loginConstraint = new CC();
+         loginConstraint.alignX("center").alignY("center").skip(3);
 
         
         this.add(pnlRight, "growy, pushy" );
         
-        this.add(pnlLeft );
+        
+        this.add(pnlLeft, loginConstraint );
     }
     
     private void btnLogin_click() 
     {
+        if (!validationSucceded()) {           
+            return;
+        }
         UserRepository userRepo = new UserRepository();
         UserModel userModel = userRepo.login(this.lblTextUserName.getTextVal(), new String(this.txtPassword.getPassword()));
         
@@ -110,8 +122,21 @@ public class Login extends MainFrame {
             this.setVisible(false);
         }
         else {
-            JOptionPane.showMessageDialog(null, "Login failed");
+            JOptionPane.showMessageDialog(null, "Either the user name or password is invalid", "Login Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private boolean validationSucceded() {        
+        ArrayList<String> errors = new ArrayList<String>(); 
+        errors = this.lblTextUserName.getTextBox().hasValidValue() ? errors : this.addError(errors, "User name required");
+        errors = this.txtPassword.getPassword().length > 0 ? errors : this.addError(errors, "Password Required");
+        
+        if (this.txtPassword.getPassword().length == 0) {
+            this.txtPassword.setBackground(skin.inValidControlColor);
+        } else {
+            this.txtPassword.setBackground(skin.frameBackgroundColor);
+        }
+        return !this.showValidationErrors(errors);       
     }
     
 }

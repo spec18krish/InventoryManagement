@@ -15,6 +15,7 @@ import customcontrols.Panel;
 import domainModels.ProductModel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,6 +32,7 @@ public class ProductNavigation extends TabNavigationFrame {
     
     ProductDetail productDetail;
     BrowseProduct browseProduct;
+    ProductFilterPanel productFilter;
 
     /**
      * Creates new form ProductNavigation
@@ -45,20 +47,23 @@ public class ProductNavigation extends TabNavigationFrame {
 
         productDetail = new ProductDetail();
         browseProduct = new BrowseProduct();
+        productFilter = new ProductFilterPanel();
         
-        pnlBrowse.add(new ProductFilterPanel(), "span, growx, pushx");
+        pnlBrowse.add(productFilter, "span, growx, pushx");
         pnlBrowse.add(browseProduct, "span, growx, pushx");   
         pnlDetail.add(productDetail, "span, growx, pushx");
         
         browseProduct.addChangeTabRequest(e -> this.changeTab(e));
         productDetail.addChangeTabRequest(e -> this.changeTab(e));
         browseProduct.addDataNavigationChanged(e -> this.dataNavigationChanged((ProductModel)e));
+        productFilter.addOnSearchChanged(e -> this.onSearchChanged(e));
         
         actionBar.setActionBarActions(NavigationAction.Browse);
     }   
     
     protected void dataNavigationChanged(ProductModel model) {
-        productDetail.loadProduct(model);
+        productDetail.loadProduct(model);       
+        enableDetail(true);
     }
 
     @Override
@@ -67,33 +72,37 @@ public class ProductNavigation extends TabNavigationFrame {
         {
             if (eventObj.navAction == NavigationAction.Update) 
             {
-              productDetail.loadProduct((ProductModel) eventObj.model);
+              productDetail.loadProduct((ProductModel) eventObj.model);    
             }
-            else {
+            else
+            if (eventObj.navAction == NavigationAction.Create) {
                 productDetail.setDefaultValues();
             }
             tabControl.setSelectedIndex(eventObj.tabIndex);
+            tabControl.setEnabledAt(eventObj.tabIndex, true);           
             actionBar.setActionBarActions(eventObj.navAction);
         }
        else 
         if (eventObj.tabIndex == 0)
         {
             tabControl.setSelectedIndex(eventObj.tabIndex);
+            tabControl.setEnabledAt(0, true);
             browseProduct.loadGrid();
+            tabControl.setEnabledAt(1, false);
             actionBar.setActionBarActions(eventObj.navAction);
-        }
+        }    
     }
     
     @Override
+    protected void onSearchChanged(Object productModel) {
+         browseProduct.loadGrid((List<ProductModel>)productModel);
+    }    
+    
+    @Override
     protected void TabChangeListener(ChangeEvent e){
-        int selectedTab = tabControl.getSelectedIndex(); 
-        
-        if(selectedTab > 0) {
-            if (selectedTab == 2) {
-                
-            }
-        }
+        super.TabChangeListener(e);
     }
+
     
     @Override
     protected void save() {
@@ -107,7 +116,10 @@ public class ProductNavigation extends TabNavigationFrame {
     
     @Override
     protected void delete() {
-        productDetail.deleteProduct();
+        if (this.confirmDelete()) {            
+            productDetail.deleteProduct();
+            this.productDetail.setDefaultValues();
+        }
     }
     
     @Override 
@@ -116,8 +128,11 @@ public class ProductNavigation extends TabNavigationFrame {
     }
     
     @Override 
-    protected void cancel() {
-        this.changeTab(new TabChangeEventObj(0, null, NavigationAction.Browse));
+    protected void cancel() {      
+        if (this.confirmCanel()) {
+         this.productDetail.setDefaultValues();
+         this.changeTab(new TabChangeEventObj(0, null, NavigationAction.Browse));
+        }
     }
     
 

@@ -8,6 +8,8 @@ package Presentation.Order;
 import Presentation.Common.Email.SMTPEmail;
 import Presentation.Common.TabNavigationPanel;
 import Presentation.Product.BrowseProduct;
+import customcontrols.ComboBox;
+import customcontrols.DateTextBox;
 import customcontrols.Label;
 import customcontrols.Panel;
 import customcontrols.TextBox;
@@ -50,8 +52,8 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
     
     private TextBox txtPurchaseName;
     private TextBox txtPurchaseDescription;
-    private TextBox txtDeliveryDate;
-    private JComboBox cmbShipmentType;
+    private DateTextBox txtDeliveryDate;
+    private ComboBox cmbShipmentType;
     private PurchaseProduct purchaseProduct;
     private PurchaseModel purchaseModel;
     
@@ -91,8 +93,9 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
         
         this.txtPurchaseName = new TextBox();
         this.txtPurchaseDescription = new TextBox();
-        this.txtDeliveryDate = new TextBox();
+        this.txtDeliveryDate = new DateTextBox();
         this.purchaseProduct = new PurchaseProduct();
+        
         Label lblImage = new Label();     
         
         lblImage.setIcon(new ImageIcon( getClass().getResource("/images/purchaseOrder.png")));
@@ -101,19 +104,29 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
         lblShipmentType = new Label("Shipment Type: ");
        
        String[] cargoType = {"Air Cargo", "Sea Cargo"};       
-       cmbShipmentType = new JComboBox(cargoType);
+       cmbShipmentType = new ComboBox(cargoType);
+       cmbShipmentType.setFont(skin.font22);
+       
+       this.txtDeliveryDate.setFont(skin.font22);
+       
         
         CC ctrlConstraints = new CC();
         ctrlConstraints.growX().pushX().wrap().alignY("center").sizeGroup("1");
+        
+        CC shipTypeConstraint = new CC();
+        shipTypeConstraint.growX().pushX().wrap().alignY("center").sizeGroup("1").gapTop("10");
+        
+        CC deliveryDateConstraint = new CC();
+        deliveryDateConstraint.growX().pushX().wrap().alignY("center").sizeGroup("1").gapTop("10");
         
         pnlLeft.add(lblPurchaseName);
         pnlLeft.add(txtPurchaseName, ctrlConstraints);
         pnlLeft.add(lblPurchaseDescription);
         pnlLeft.add(txtPurchaseDescription, ctrlConstraints);
-        pnlLeft.add(lblDeliveryDate);
-        pnlLeft.add(txtDeliveryDate, ctrlConstraints);
-        pnlLeft.add(lblShipmentType);
-        pnlLeft.add(cmbShipmentType, "wrap");
+        pnlLeft.add(lblDeliveryDate, "gaptop 10");
+        pnlLeft.add(txtDeliveryDate, deliveryDateConstraint);
+        pnlLeft.add(lblShipmentType, "gaptop 10");
+        pnlLeft.add(cmbShipmentType, shipTypeConstraint);
         pnlRight.add(lblImage, "span, gapleft 30");
         pnlLeft.add(pnlRight, "spany 7, spanx, gapleft 30, dock east, wrap");   
         pnlBottom.add(purchaseProduct, "grow, push");
@@ -127,6 +140,17 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
         this.add(this.lblProductGrid, "wrap");
         this.add(pnlBottom, "span 7 7, grow, push");       
         
+    }
+    
+    public boolean validationSucceded() {
+        ArrayList<String> error = new ArrayList<String>();
+        
+        error = this.txtPurchaseName.hasValidValue() ? error : this.addError(error, "Purchase Name Required");
+        error = this.txtPurchaseDescription.hasValidValue() ? error : this.addError(error, "Purchase Description is required");
+        error = this.txtDeliveryDate.hasValidValue() ? error : this.addError(error, "Valid Delivery date is required");
+        error = this.cmbShipmentType.hasValidValue() ? error : this.addError(error, "Shipment type required");
+                
+        return !this.showValidationErrors(error);
     }
     
     public void load(PurchaseModel model) {       
@@ -172,7 +196,7 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
         PurchaseModel purchaseModel = new PurchaseModel();
         purchaseModel.purchaseDetails = new ArrayList<PurchaseDetailModel>();
         this.txtPurchaseName.setText("");
-        this.txtDeliveryDate.setText("");
+        this.txtDeliveryDate.setDateToToday();
         this.txtPurchaseDescription.setText("");
         this.cmbShipmentType.setSelectedItem("Sea Cargo");
         ProductRepository productRepo = new ProductRepository();
@@ -186,6 +210,9 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
     }
     
     public void savePurchase() {
+        if (!this.validationSucceded()) {
+            return;
+        }
        int inserted = this.purchaseRepo.createEntity(this.getUserEnteredValues()); 
        this.goTOBrowse("Saved Successfully", inserted > 0);        
     }
@@ -199,6 +226,9 @@ public class PurchaseOrderDetail extends TabNavigationPanel {
     }
     
     public void update() {
+        if (!this.validationSucceded()) {
+            return;
+        }
        int updated = this.purchaseRepo.updateEntity(this.getUserEnteredValues()); 
        this.goTOBrowse("Saved Successfully", updated > 0);     
        confirmOrder();

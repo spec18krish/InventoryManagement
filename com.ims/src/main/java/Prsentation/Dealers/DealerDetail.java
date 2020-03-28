@@ -8,9 +8,11 @@ package Prsentation.Dealers;
 import Presentation.Common.IDetailNavigation;
 import Presentation.Common.TabNavigationPanel;
 import customcontrols.Label;
+import customcontrols.TextArea;
 import customcontrols.TextBox;
 import domainModels.DealerModel;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.JTextArea;
 import net.miginfocom.layout.CC;
 import net.miginfocom.swing.MigLayout;
@@ -44,7 +46,7 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
     public TextBox txtCity;
     public TextBox txtCountry;
     public TextBox txtCompany;
-    public JTextArea txtDealerDescription;
+    public TextArea txtDealerDescription;
     
     
     private DealerRepository dealerRepo;
@@ -82,8 +84,7 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
         this.txtCity = new TextBox();
         this.txtCountry = new TextBox();
         this.txtCompany = new TextBox();
-        this.txtDealerDescription = new JTextArea();
-        this.txtDealerDescription.setPreferredSize(new Dimension(500, 300));
+        this.txtDealerDescription = new TextArea(500, 300);       
         CC componentCotrol = new CC();
         componentCotrol.wrap();
         
@@ -124,7 +125,7 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
         this.txtStreetName.setText(model.user.streetName);
         this.txtSuburb.setText(model.user.suburb);
         this.txtCity.setText(model.user.city);
-        this.txtCountry.setText("China");
+        this.txtCountry.setText(model.user.country);
         this.txtDealerDescription.setText(model.dealerDescription);
     }
 
@@ -139,6 +140,7 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
        _model.user.streetName = this.txtStreetName.getText();
        _model.user.suburb = this.txtSuburb.getText();
        _model.user.city = this.txtCity.getText();
+       _model.user.country = this.txtCountry.getText();
        _model.companyName = this.txtCompany.getText();
        _model.dealerDescription = this.txtDealerDescription.getText();
       
@@ -162,6 +164,31 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
         this.setModel(model);
         setValues(model);
     }
+    
+    public boolean validationSucceded() {
+        ArrayList<String> error = new ArrayList<String>();
+        
+        error = this.txtCompany.hasValidValue() ? error : this.addError(error, "Company required");
+        String company = this.txtCompany.getText();
+        if (this.txtCompany.hasValidValue()) {
+             error = !this.dealerRepo.isCompanyExists(company) ? error : this.addError(error, "Company Name already exists");
+        }
+       
+        error = this.txtFirstName.hasValidValue() ? error : this.addError(error, "First Name Required");
+        error = this.txtLastName.hasValidValue() ? error : this.addError(error,  "Last Name Required");
+        error = this.txtEmail.hasValidEmail()? error : this.addError(error, "Valid Email is Required");
+        error = this.txtMobile.hasValidValue(int.class) ? error :
+                                          this.addError(error, "valid Mobile number Required ( only 10 digits allowed )");
+        error = this.txtHouseNo.hasValidValue(int.class) ? error : this.addError(error, "valid street number Required");
+        
+        error = this.txtStreetName.hasValidValue() ? error : this.addError(error,  "Street Name Required");
+        error = this.txtSuburb.hasValidValue() ? error : this.addError(error,  "Suburb is Required");
+        error = this.txtCity.hasValidValue() ? error : this.addError(error,  "City is Required");
+        error = this.txtCountry.hasValidValue() ? error : this.addError(error,  "Country is Required");
+        error = this.txtDealerDescription.hasValidValue() ? error : this.addError(error,  "Dealer Discripton Required");
+        
+        return !this.showValidationErrors(error);        
+    }
 
     @Override
     public void setDefaultValues() {
@@ -172,13 +199,19 @@ public class DealerDetail extends TabNavigationPanel implements IDetailNavigatio
     
     @Override
     public void save() {
+       if (!validationSucceded()) {
+           return;
+       }
        DealerModel dealerModel = getUserSelectedValues();
        int inserted = this.dealerRepo.createEntity(dealerModel);
        this.goTOBrowse(inserted > 0);
     }
 
     @Override
-    public void update() {       
+    public void update() {    
+       if (!validationSucceded()) {
+           return;
+       }
        int updated = this.dealerRepo.updateEntity(getUserSelectedValues());
        this.goTOBrowse(updated > 0);
     }

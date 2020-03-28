@@ -7,10 +7,12 @@ package Presentation.Order;
 
 import Presentation.Common.TabNavigationPanel;
 import customcontrols.Label;
+import customcontrols.TextArea;
 import customcontrols.TextBox;
 import domainModels.PurchaseDetailModel;
 import domainModels.PurchaseProductModel;
 import java.awt.Dimension;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -26,7 +28,7 @@ public class PurchaseProductDetail extends TabNavigationPanel {
     Label lblRequiredOrdering;
     
     TextBox txtProductQuantity;
-    TextBox txtPurchaseProductDescription;
+    TextArea txtPurchaseProductDescription;
     JCheckBox chkRequiredOrdering;
 
     
@@ -34,7 +36,7 @@ public class PurchaseProductDetail extends TabNavigationPanel {
     public PurchaseProductDetail() {
         super();
         this.setLayout(new MigLayout());
-        this.setPreferredSize(new Dimension(650, 350));
+        this.setPreferredSize(new Dimension(850, 350));
         initializePurchaseProductDetail();
     }
     
@@ -43,18 +45,18 @@ public class PurchaseProductDetail extends TabNavigationPanel {
        lblProductQuantity = new Label("Product Quantity: ");
        txtProductQuantity = new TextBox();
        lblPurchaseProductDescription = new Label("Product Description: ");
-       txtPurchaseProductDescription = new TextBox();       
+       txtPurchaseProductDescription = new TextArea();       
        lblRequiredOrdering = new Label("Required Ordering: ");
-       chkRequiredOrdering = new JCheckBox();
+       chkRequiredOrdering = new JCheckBox();       
 
        
 
        this.add(lblProductQuantity);
        this.add(txtProductQuantity, "wrap");
-       this.add(lblPurchaseProductDescription);
-       this.add(txtPurchaseProductDescription, "wrap");
        this.add(lblRequiredOrdering);
        this.add(chkRequiredOrdering, "wrap");
+       this.add(lblPurchaseProductDescription, "wrap");
+       this.add(txtPurchaseProductDescription, "wrap, grow, push, span");
 
     }
     

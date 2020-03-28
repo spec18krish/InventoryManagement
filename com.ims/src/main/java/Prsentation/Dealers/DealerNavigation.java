@@ -53,6 +53,7 @@ public class DealerNavigation extends TabNavigationFrame
     
     protected void dataNavigationChanged(DealerModel model) {
         dealerDetail.load(model);
+        enableDetail(true);
     }
 
     @Override
@@ -67,6 +68,7 @@ public class DealerNavigation extends TabNavigationFrame
                 dealerDetail.setDefaultValues();
             }
             tabControl.setSelectedIndex(eventObj.tabIndex);
+            tabControl.setEnabledAt(eventObj.tabIndex, true);
             actionBar.setActionBarActions(eventObj.navAction);
         }
        else 
@@ -80,13 +82,7 @@ public class DealerNavigation extends TabNavigationFrame
     
     @Override
     protected void TabChangeListener(ChangeEvent e){
-        int selectedTab = tabControl.getSelectedIndex(); 
-        
-        if(selectedTab > 0) {
-            if (selectedTab == 2) {
-                
-            }
-        }
+        super.TabChangeListener(e);
     }
     
     @Override

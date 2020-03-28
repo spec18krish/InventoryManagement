@@ -14,8 +14,10 @@ import customcontrols.DropDownModel;
 import customcontrols.Label;
 import customcontrols.Panel;
 import customcontrols.PictureBox;
+import customcontrols.TextArea;
 import customcontrols.TextBox;
 import domainModels.BrandModel;
+import domainModels.DealerModel;
 import domainModels.ProductCategoryModel;
 import domainModels.ProductModel;
 import java.awt.Color;
@@ -35,6 +37,7 @@ import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 import repository.BrandRepository;
+import repository.DealerRepository;
 import repository.ProductCategoryRepository;
 import repository.ProductRepository;
 
@@ -50,6 +53,7 @@ public class ProductDetail extends TabNavigationPanel {
      Label lblAvailableStock;
      Label lblCategory;
      Label lblBrand;
+     Label lblDealer;
      Label lblDescription;
      JScrollPane descriptionScrollPane;
      
@@ -58,7 +62,8 @@ public class ProductDetail extends TabNavigationPanel {
      TextBox txtAvailableStock;
      ComboBox cmbBrand;
      ComboBox cmbCategory;
-     JTextArea txtDescription;
+     ComboBox cmbDealer;
+     TextArea txtDescription;
      PictureBox productImage;
      Button btnAdd;
      
@@ -66,7 +71,7 @@ public class ProductDetail extends TabNavigationPanel {
      private List<BrandModel> brandModels;
      private List<ProductCategoryModel> categoryModels;
      
-     
+     DealerRepository dealerRepo;
     /**
      * Creates new form ProductDetail
      */
@@ -83,6 +88,7 @@ public class ProductDetail extends TabNavigationPanel {
     }
     
     public void initializeProductDetail() {
+        dealerRepo = new DealerRepository();
         this.setLayout(new MigLayout());     
         this.productModel = new ProductModel();
         
@@ -106,6 +112,7 @@ public class ProductDetail extends TabNavigationPanel {
       lblAvailableStock  = new Label("Available Stock");
       lblCategory = new Label("Product Category");
       lblBrand = new Label("Product Brand");
+      lblDealer = new Label("Select Dealer");
       lblDescription = new Label("Product Description");
       Label lblImage = new Label();
       
@@ -114,7 +121,8 @@ public class ProductDetail extends TabNavigationPanel {
         txtAvailableStock = new TextBox();
         cmbBrand = new ComboBox();
         cmbCategory = new ComboBox();
-        txtDescription = new JTextArea(12, 20);
+        cmbDealer = new ComboBox();
+        txtDescription = new TextArea();
         productImage = new PictureBox();
         descriptionScrollPane = new JScrollPane(txtDescription);
         
@@ -139,6 +147,8 @@ public class ProductDetail extends TabNavigationPanel {
         pnlleft.add(cmbCategory, ctrlConstraints);
         pnlleft.add(lblBrand);
         pnlleft.add(cmbBrand, ctrlConstraints); 
+        pnlleft.add(lblDealer);
+        pnlleft.add(cmbDealer, ctrlConstraints);
         pnlRight.add(lblImage, "span, gapleft 30");
         pnlleft.add(pnlRight, "spany 7, spanx, gapleft 30, dock east, wrap");   
         pnlBottom.add(descriptionScrollPane, "grow, push");
@@ -154,13 +164,30 @@ public class ProductDetail extends TabNavigationPanel {
         this.add(pnlBottom, "span 6 6, grow, push");
     }
     
+    public boolean validationSucceded() {
+        
+        ArrayList<String> error = new ArrayList<String>(0);
+        error = this.txtName.hasValidValue() ? error : this.addError(error, "Product Name required");        
+        error = this.txtPrice.hasValidValue(float.class) ? error : this.addError(error, "Enter a valid product price");
+        error = this.txtAvailableStock.hasValidValue(int.class)? error : this.addError(error, "Enter a valid number for Available stock");      
+        error = this.cmbBrand.hasValidValue() ? error : this.addError(error, "Product Brand Required");
+        error = this.cmbCategory.hasValidValue() ? error : this.addError(error, "Product Category Required");
+        error = this.cmbDealer.hasValidValue() ? error : this.addError(error, "Dealer is Required");
+        error = this.txtDescription.hasValidValue() ? error : this.addError(error, "Product description required");
+        
+        return !this.showValidationErrors(error);
+    }
+    
     public void loadLookups() 
     {
         ProductCategoryRepository catRepo = new ProductCategoryRepository();
         BrandRepository brandRepo = new BrandRepository();
+        DealerRepository dealerRepo = new DealerRepository();
         
         this.categoryModels = catRepo.getAll();
-        this.brandModels = brandRepo.getAll();  
+        this.brandModels = brandRepo.getAll();
+        ArrayList<String> dealerCompany = new ArrayList<String>(dealerRepo.getDealerCompanies());
+        
         String[] brandNames = new String[brandModels.size()];
         String[] catagoryNames = new String[categoryModels.size()];
         
@@ -169,6 +196,7 @@ public class ProductDetail extends TabNavigationPanel {
         
         cmbCategory.setDefaultModel(catagoryNames);       
         cmbBrand.setDefaultModel(brandRepo.getAllBrandNames());
+        cmbDealer.setDefaultModel(dealerCompany);
     }
     
     public void loadProduct(ProductModel productModel) {
@@ -183,17 +211,22 @@ public class ProductDetail extends TabNavigationPanel {
         this.txtAvailableStock.setText(Integer.toString(productModel.availableStock));
         this.txtDescription.setText(productModel.productDescription);
         this.cmbBrand.setSelectedItem(productModel.brand.brandName);
-        this.cmbCategory.setSelectedItem(productModel.category.categoryName);         
+        this.cmbCategory.setSelectedItem(productModel.category.categoryName); 
+        this.cmbDealer.setSelectedItem(productModel.dealer.companyName);
     }
     
     public void getUserEnteredValues() {
-        
+          
+          
           this.productModel.name = this.txtName.getText();
           this.productModel.productDescription = this.txtDescription.getText();
           this.productModel.price = Long.parseLong(this.txtPrice.getText());
           this.productModel.brandId = this.getBrandByName(this.cmbBrand.getSelectedItem().toString()).brandId;
           this.productModel.categoryId = this.getCategoryByName(this.cmbCategory.getSelectedItem().toString()).categoryId;
           this.productModel.availableStock = Integer.parseInt(txtAvailableStock.getText());
+          DealerModel dealer =  this.dealerRepo.getDealerByCompanyName(this.cmbDealer.getSelectedString());
+          this.productModel.dealer = dealer;
+          this.productModel.dealerId = dealer.dealerId;
     }
     
     public void setDefaultValues(){
@@ -201,10 +234,17 @@ public class ProductDetail extends TabNavigationPanel {
         this.txtName.setText("");
         this.txtPrice.setText("");
         this.txtAvailableStock.setText("");
-        this.txtDescription.setText("");        
+        this.txtDescription.setText("");    
+        this.cmbBrand.setSelectedItem(this.cmbBrand.initialVal);
+        this.cmbCategory.setSelectedItem(this.cmbCategory.initialVal);
+        this.cmbDealer.setSelectedItem(this.cmbDealer.initialVal);
     }
     
     public void saveProduct() {
+        
+        if (!this.validationSucceded()) {
+            return;
+        }
         
          getUserEnteredValues();
          ProductRepository productRepo = new ProductRepository();       
@@ -246,17 +286,21 @@ public class ProductDetail extends TabNavigationPanel {
          ProductRepository productRepo = new ProductRepository();       
          int deleted = productRepo.deleteEntityById(this.productModel.productId);
          
-         if (deleted > 0) {
-             JOptionPane.showMessageDialog(null, "Product deleted");
+         if (deleted > 0) {         
+             this.showInfo("", "Product deleted");
+             this.setDefaultValues();
              this.fireTabChangeRequest(new TabChangeEventObj(0, null, NavigationAction.Browse));
          }
          else 
          {
-               JOptionPane.showMessageDialog(null, "Product not deleted");
+               this.showInfo("", "Product not deleted");               
          }
     }
     
     public void updateProduct() {
+         if (!this.validationSucceded()) {
+             return;
+         }
          getUserEnteredValues();
          ProductRepository productRepo = new ProductRepository();       
          int updated = productRepo.updateEntity(this.productModel);

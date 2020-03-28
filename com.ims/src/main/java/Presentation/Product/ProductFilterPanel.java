@@ -6,6 +6,7 @@
 package Presentation.Product;
 
 import Helper.UIHelper;
+import Presentation.Common.TabNavigationPanel;
 import com.ims.dataAccess.tables.pojos.Productcategory;
 
 
@@ -16,17 +17,30 @@ import customcontrols.LabelCombobox;
 import customcontrols.LabelTextFieldInline;
 import customcontrols.Panel;
 import domainModels.ProductCategoryModel;
+import domainModels.ProductModel;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 
 import net.miginfocom.swing.MigLayout;
+import repository.BrandRepository;
 import repository.ProductCategoryRepository;
+import repository.ProductRepository;
 
-public class ProductFilterPanel extends Panel {
+public class ProductFilterPanel extends TabNavigationPanel {
 
 private Panel filterBox;
 private Panel gridBox;
+
+private LabelTextFieldInline nameTextField;
+private LabelTextFieldInline productIdField;
+private LabelCombobox cmb;
+private LabelCombobox cmbProductBrand;
+private LabelTextFieldInline availableStockField;
 
     public ProductFilterPanel() {
         initComponents();
@@ -38,27 +52,61 @@ private Panel gridBox;
         
        
         this.setLayout(new MigLayout());
+        this.setTitle("Search Product");
         filterBox = new Panel();         
         filterBox.setLayout(new MigLayout());      
     
-        
-        LabelTextFieldInline nameTextField = new LabelTextFieldInline("Name:", 250, 20);
+        Button btnSearch = new Button("Search");
+        nameTextField = new LabelTextFieldInline("Name:", 250, 20);
        
-        LabelTextFieldInline productIdField = new LabelTextFieldInline("ID:",  190, 20);
+        productIdField = new LabelTextFieldInline("ID:",  190, 20);
        
         ArrayList<String> categoryNames =  new ProductCategoryRepository().getAllCategoryNames();
-        String[] items = new String[categoryNames.size()];
-        LabelCombobox cmb = new LabelCombobox("Category:", 250, categoryNames.toArray(items));        
+        ArrayList<String> brandNames = new ArrayList<String>(Arrays.asList(new BrandRepository().getAllBrandNames()));
+             
+        cmb = new LabelCombobox("Category:", 250, categoryNames);     
+        
+        cmbProductBrand = new LabelCombobox("Brand:", 250, brandNames);
+        
+        availableStockField = new LabelTextFieldInline("Available Stock (Less then):", 350, 20);
+        
+        btnSearch.addActionListener(e -> this.btnSearch_Click());
      
         
         filterBox.add(productIdField, "gapx 20, growx, pushx");
         filterBox.add(nameTextField, "gapx 20, growx, pushx");
         filterBox.add(cmb, "wrap, gapx 20, growx, pushx");
-        filterBox.add(new Button("Search"), "skip 2, align trailing, gapy 40");       
+        filterBox.add(cmbProductBrand, "gapx 20, growx, pushx");
+        filterBox.add(availableStockField, "gapx 20, growx, pushx");
+        filterBox.add(btnSearch, "align leading, gapx 40, gapy 20");       
      
 
        this.add(filterBox, "span, pushx, grow, gapright 60");     
 
+    }
+    
+    private void btnSearch_Click() {
+        
+         int productId = 0;
+        if (this.productIdField.getTextVal().matches("\\d+")) {
+            productId = Integer.parseInt(this.productIdField.getTextVal());
+        }
+         
+        String productName = this.nameTextField.getTextVal();
+        String category = this.cmb.selectedItem().equals("--Select Items--") ? "" : this.cmb.selectedItem();
+        String brand = this.cmbProductBrand.selectedItem().equals("--Select Items--") ? "" : this.cmbProductBrand.selectedItem();
+        String avail = this.availableStockField.getTextVal();
+        
+        int availableStock = - 1;
+        if (avail.matches("\\d+")) {
+             availableStock = Integer.parseInt(avail);
+         }
+ 
+        ProductRepository productRepo = new ProductRepository();
+        List<ProductModel> productModelList = productRepo.searchEntity(productId, productName, category, brand, availableStock);
+        
+        this.fireSearchChanged(productModelList);
+        
     }
     
    

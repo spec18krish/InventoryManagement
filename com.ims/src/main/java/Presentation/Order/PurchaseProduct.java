@@ -91,7 +91,7 @@ public class PurchaseProduct extends TabNavigationPanel {
         
      // ImageIcon imgIcon = new ImageIcon(this.getClass().getResource("/images/catalog/Orders.png"));
       purchaseProductDetail.setModelValues(model);
-      int result = JOptionPane.showConfirmDialog(null, purchaseProductDetail, "Product Order",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+      int result = JOptionPane.showConfirmDialog(null, purchaseProductDetail, "Product Order",JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE);
       
       if (result == JOptionPane.OK_OPTION) {
           PurchaseDetailModel userEnteredValues = purchaseProductDetail.getUserEnteredValues();

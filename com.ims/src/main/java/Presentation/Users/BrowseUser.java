@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Prsentation.Dealers;
+package Presentation.Users;
 
 import Enums.NavigationAction;
 import EventObject.TabChangeEventObj;
@@ -11,59 +11,64 @@ import Presentation.Common.TabNavigationPanel;
 import customcontrols.GridViewPanel;
 import customcontrols.TableModel;
 import domainModels.DealerModel;
-import domainModels.ProductModel;
+import domainModels.UserModel;
 import interfaces.TabChangeRequestHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import net.miginfocom.swing.MigLayout;
 import repository.DealerRepository;
-import repository.ProductRepository;
+import repository.UserRepository;
 
 /**
  *
  * @author Vidhya Mohan
  */
-public class BrowseDealer extends TabNavigationPanel {
-    
-   GridViewPanel<DealerModel> grd;
+public class BrowseUser extends TabNavigationPanel {
+       GridViewPanel<UserModel> grd;
    
-   public BrowseDealer() {
+   public BrowseUser() {
         super();
         this.setLayout(new MigLayout());  
-        initializeBrowseDealer();
+        initializeBrowseUser();
         this.add(grd, "span, grow, push");
         tabChangeHandlers = new ArrayList<TabChangeRequestHandler>();
         this.setPreferredSize(skin.frameDimension);
    }
     
-    public void initializeBrowseDealer() {
-       grd = new GridViewPanel<DealerModel>();       
-       loadGrid();
-       grd.addDoubleClickHandler(e -> gridViewRowDoubleClicked((DealerModel) e));
-       grd.addClickHandler(e -> gridViewClicked((DealerModel)e));
+    public void initializeBrowseUser() {
+       grd = new GridViewPanel<UserModel>();       
+       setGrid();
+       grd.addDoubleClickHandler(e -> gridViewRowDoubleClicked((UserModel) e));
+       grd.addClickHandler(e -> gridViewClicked((UserModel)e));
+       
     }
     
-
+       public void setGrid() {
+         ArrayList<UserModel> modelList = new ArrayList<UserModel>();
+                   
+         UserRepository repo = new UserRepository();
+         modelList = repo.getAll();
+         loadGrid(modelList);
+       }
     
-        public void loadGrid() {
-        ArrayList<DealerModel> modelList = new ArrayList<DealerModel>();
+        public void loadGrid(List<UserModel> modelList) {
+        
         HashMap<String, String> columnsKeyVal = new LinkedHashMap<String, String>();    
    
-        columnsKeyVal.put("dealerId", "Dealer Id");
-        columnsKeyVal.put("companyName", "Company");
-        columnsKeyVal.put("user-firstName", "Contact First Name");
-        columnsKeyVal.put("user-lastName", "Contact Last Name");
-        columnsKeyVal.put("user-email", "Email");
-        columnsKeyVal.put("user-mobileNumber", "Mobile");
-        columnsKeyVal.put("user-suburb", "Suburb");
-        columnsKeyVal.put("user-city", "City");
+        columnsKeyVal.put("userId", "User Id");        
+        columnsKeyVal.put("firstName", "Contact First Name");
+        columnsKeyVal.put("lastName", "Contact Last Name");
+        columnsKeyVal.put("email", "Email");
+        columnsKeyVal.put("mobileNumber", "Mobile");
+        columnsKeyVal.put("suburb", "Suburb");
+        columnsKeyVal.put("city", "City");
+        columnsKeyVal.put("userType-userTypeName", "User Type");
           
-        
-        DealerRepository repo = new DealerRepository();
-        modelList= repo.getAll();
+
     
-       TableModel<DealerModel> tblModel = new TableModel<DealerModel>(modelList, columnsKeyVal);
+       TableModel<UserModel> tblModel = new TableModel<UserModel>(new ArrayList<UserModel>(modelList), columnsKeyVal);
        grd.setModel(tblModel);
        
        //TableCellRenderer tableRenderer = grd.getGridView().getDefaultRenderer(Button.class);
@@ -74,18 +79,17 @@ public class BrowseDealer extends TabNavigationPanel {
        grd.addGridButtonClickHandler(e -> gridButtonClicked(e));
     }
     
-    public void gridViewClicked(DealerModel model) {
+    public void gridViewClicked(UserModel model) {
         this.fireDataNavigationChanged(model);
     }
 
-    public void gridViewRowDoubleClicked(DealerModel model) {
+    public void gridViewRowDoubleClicked(UserModel model) {
        this.fireTabChangeRequest(new TabChangeEventObj(1, model, NavigationAction.Update));
     }
     
-    public void gridButtonClicked(DealerModel model) {
+    public void gridButtonClicked(UserModel model) {
         int h = 0;
     }
-    
     
     
 }

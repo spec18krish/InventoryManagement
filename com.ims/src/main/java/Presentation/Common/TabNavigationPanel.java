@@ -9,10 +9,13 @@ import Enums.NavigationAction;
 import EventObject.TabChangeEventObj;
 import customcontrols.Panel;
 import interfaces.DataNavigationChangedHandler;
+import interfaces.SearchChangeHandler;
 import interfaces.TabChangeRequestHandler;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -22,9 +25,13 @@ public class TabNavigationPanel extends Panel {
     
     public List<TabChangeRequestHandler> tabChangeHandlers;
     public List<DataNavigationChangedHandler> dataNavigationChanged;
+    public List<SearchChangeHandler> onSearchChanged;
+    public Utilities utility = new Utilities();
+    
     public TabNavigationPanel() {
         tabChangeHandlers = new ArrayList<TabChangeRequestHandler>();
         dataNavigationChanged = new ArrayList<DataNavigationChangedHandler>();
+        onSearchChanged = new ArrayList<SearchChangeHandler>();
     }
     
     public void addChangeTabRequest(TabChangeRequestHandler changeTab) {
@@ -35,11 +42,16 @@ public class TabNavigationPanel extends Panel {
         dataNavigationChanged.add(datChangeEvent);
     }
     
+    public void addOnSearchChanged(SearchChangeHandler searchChanged){
+        onSearchChanged.add(searchChanged);
+    }
+    
     public <T> void fireDataNavigationChanged(T model) {
          for(DataNavigationChangedHandler dataChanged: dataNavigationChanged) {
            dataChanged.onDataNavigationChanged(model);
        }    
-    }
+    }   
+    
     
     public void fireTabChangeRequest(TabChangeEventObj eventObj) {        
          for(TabChangeRequestHandler changeRequest: tabChangeHandlers) {
@@ -47,8 +59,34 @@ public class TabNavigationPanel extends Panel {
        }        
     }
     
+    public void fireSearchChanged(Object searchResult) {        
+         for(SearchChangeHandler searchChange: onSearchChanged) {
+           searchChange.onSearchChange(searchResult);
+       }        
+    }
+    
     public void goTOBrowse(boolean isSuccess) {
         this.goTOBrowse("", isSuccess);
+    }
+    
+     protected boolean showValidationErrors(ArrayList<String> errorLists) {
+       return this.utility.showValidationErrors(errorLists);
+    }
+    
+     protected ArrayList<String> addError(ArrayList<String> errors, String message) {
+       return this.utility.addError(errors, message);
+    }
+     
+    protected boolean confirmCanel() {
+        return this.utility.confirmCancel();
+    }
+    
+    protected void showInfo(String title, String message) {
+        this.utility.showInfo(title, message);
+    }
+    
+    protected boolean confirmDelete() {
+        return this.utility.confirmDelete();
     }
     
     public void goTOBrowse(String optionalMessage, boolean isSuccess) {
@@ -57,15 +95,14 @@ public class TabNavigationPanel extends Panel {
         if (isSuccess) {
             if (message.equals(null) || message.isEmpty()) { 
                 message = "Record created or updated successfully";
-            } 
-            JOptionPane.showMessageDialog(null, message);
+            }            
         this.fireTabChangeRequest(new TabChangeEventObj(0, null, NavigationAction.Browse));
         }
         else {
              if (message.equals(null) || message.isEmpty()) { 
                 message = "Record does not created or updated";
-            } 
-            JOptionPane.showMessageDialog(null, message);
+            }            
         }
+        this.utility.showInfo("", message);
     }
 }

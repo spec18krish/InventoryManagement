@@ -15,10 +15,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 /**
  *
@@ -29,6 +32,7 @@ public class MainFrame extends BaseFrame {
     protected JPanel contentPane;
     protected Skin skin = new Skin();
     protected UIHelper uiHelper = new UIHelper();
+    protected Utilities utility = new Utilities();
     
     public MainFrame() {
         super();
@@ -41,7 +45,9 @@ public class MainFrame extends BaseFrame {
         this.setMinimumSize(new Dimension(2400, 1500));
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
        // setUndecorated(true);
-       // setIconImage(new ImageIcon(this.getClass().getResource("/Image/inventory.png")).getImage());		
+       Image logo = this.getImageIconByPath("/Images/logo.png").getImage();
+       this.setIconImage(logo);
+       this.utility.setUIManager();
     }
 
    
@@ -94,6 +100,26 @@ public class MainFrame extends BaseFrame {
             }
             btn.setText(name);
             return this.getButtonSettings(btn);		
+    }
+    
+    protected boolean showValidationErrors(ArrayList<String> errorLists) {
+       return this.utility.showValidationErrors(errorLists);
+    }
+    
+    protected ArrayList<String>  addError(ArrayList<String> errors, String message) {
+      return this.utility.addError(errors, message);
+    }
+    
+    protected boolean confirmCanel() {
+        return this.utility.confirmCancel();
+    }
+    
+    protected boolean confirmDelete() {
+        return this.utility.confirmDelete();
+    }
+    
+    protected void showInfo(String title, String message) {
+        this.utility.showInfo(title, message);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

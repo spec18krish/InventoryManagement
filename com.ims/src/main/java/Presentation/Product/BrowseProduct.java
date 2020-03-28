@@ -55,8 +55,8 @@ public class BrowseProduct extends TabNavigationPanel {
        grd.addClickHandler(e -> gridViewClicked((ProductModel)e));
     }    
     
-    public void loadGrid() {
-        ArrayList<ProductModel> productLists = new ArrayList<ProductModel>();
+    public void loadGrid(List<ProductModel> productLists) {
+       
         HashMap<String, String> columnsKeyVal = new LinkedHashMap<String, String>();    
    
         columnsKeyVal.put("productId", "Product Id");
@@ -66,21 +66,26 @@ public class BrowseProduct extends TabNavigationPanel {
         columnsKeyVal.put("price", "Price");
         columnsKeyVal.put("category-categoryName", "Category");
         columnsKeyVal.put("brand-brandName", "Brand Name");
-          
+        
+       TableModel<ProductModel> tblModel = new TableModel<ProductModel>(new ArrayList(productLists), columnsKeyVal);
+       grd.setModel(tblModel);
+       grd.addGridButtonClickHandler(e -> gridButtonClicked(e));
+    }
+    
+    public void loadGrid() {
+        ArrayList<ProductModel> productLists = new ArrayList<ProductModel>();          
         
         ProductRepository repo = new ProductRepository();
         productLists = repo.getAll();
-    
-       TableModel<ProductModel> tblModel = new TableModel<ProductModel>(productLists, columnsKeyVal);
-       grd.setModel(tblModel);
-       
+
+        loadGrid(productLists);
        //TableCellRenderer tableRenderer = grd.getGridView().getDefaultRenderer(Button.class);
        
        //grd.getGridView().setDefaultRenderer(Button.class, new GridCellRenderer(tableRenderer));
        //grd.getGridView().getColumn("Add To Order").setCellRenderer(new GridCellRenderer(tableRenderer, Button.class));
        
-       grd.addGridButtonClickHandler(e -> gridButtonClicked(e));
-    }
+       
+    }   
     
     public void gridViewClicked(ProductModel model) {
         this.fireDataNavigationChanged(model);

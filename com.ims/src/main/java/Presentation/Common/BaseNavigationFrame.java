@@ -7,11 +7,13 @@ package Presentation.Common;
 
 import Enums.ActionBarActions;
 import Enums.UserRole;
+import Presentation.Brand.ProductBrandNavigation;
 import Presentation.Category.ProductCategoryNavigation;
 import Presentation.DashBoard;
 import Presentation.Login;
 import Presentation.Order.PurchaseOrderNavigation;
 import Presentation.Product.ProductNavigation;
+import Presentation.Users.UserNavigation;
 import Prsentation.Dealers.DealerNavigation;
 import customcontrols.ActionBar;
 import customcontrols.Label;
@@ -39,6 +41,8 @@ public class BaseNavigationFrame extends MainFrame {
     public JPanel leftPane;
     
     public JPanel sideNavigation;
+    
+    public ActionBarActions currentUserAction;
     
     /**
      * Creates new form BaseNavigationFrame
@@ -187,6 +191,18 @@ public class BaseNavigationFrame extends MainFrame {
           this.setVisible(false);
         });
         
+        sideNavBrand.addActionListener(e -> {
+          ProductBrandNavigation brandNav = new ProductBrandNavigation();
+          brandNav.setVisible(true);
+          this.setVisible(false);   
+        });
+        
+        sideNavUsers.addActionListener(e -> {
+          UserNavigation userNav = new UserNavigation();
+          userNav.setVisible(true);
+          this.setVisible(false);       
+            
+        });
 
         
     }
@@ -211,10 +227,13 @@ public class BaseNavigationFrame extends MainFrame {
                 break;
             case Home:
                 goHome();
+                break;
             case Logout:
                 logout();
+                break;
                 
         }
+        this.currentUserAction = action;
     }
         
     protected void save() {
